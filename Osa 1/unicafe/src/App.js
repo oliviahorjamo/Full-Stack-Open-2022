@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 
 const App = () => {
-  // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
@@ -10,6 +9,7 @@ const App = () => {
   const [average, setAverage] = useState(0)
   const [positive_share, setSharePositive] = useState(0)
   const [positives_count, setCountPositive] = useState(0)
+  const all = [good, neutral, bad, count, sum, average, positive_share]
 
   useEffect(() => {
     setAverage(sum / count)
@@ -43,12 +43,8 @@ const App = () => {
       <Button handleClick={handleNeutralClick} text="neutral"/>
       <Button handleClick={handleBadClick} text="bad"/>
       <h2>statistics</h2>
-      <p>good: {good}</p>
-      <p>neutral: {neutral}</p>
-      <p>bad: {bad}</p>
-      <p>count: {count}</p>
-      <p>average: {average}</p>
-      <p>positive: {positive_share}</p>
+      <Statistics good = {good} neutral = {neutral} bad = {bad} count = {count} 
+      sum = {sum} average = {average} positive_share = {positive_share}/>
     </div>
   )
 }
@@ -58,5 +54,18 @@ const Button = (props) => (
     {props.text}
   </button>
 )
+
+const Statistics = (props) => {
+  return (
+    <div>
+    <p>good: {props.good}</p>
+    <p>neutral: {props.neutral}</p>
+    <p>bad: {props.bad}</p>
+    <p>count: {props.count}</p>
+    <p>average: {props.average}</p>
+    <p>positive: {props.positive_share}</p>
+  </div>
+  )
+}
 
 export default App;
