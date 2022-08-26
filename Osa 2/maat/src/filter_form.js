@@ -4,7 +4,7 @@ const Filter = (props) => {
     return (
         <form>
         <div>
-          filter shown with <input
+          list shown with filter <input
           value={filter_str}
           onChange={handle}
           />
