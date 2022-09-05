@@ -9,7 +9,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState("")
   const [newFilter, setNewFilter] = useState("")
-  const [changeMade, setChangeMade] = useState(0)
+  const [changeMade, setChangeMade] = useState(null)
+  const [errorHappened, setError] = useState(null)
 
   useEffect(() => {
     phoneService
@@ -30,6 +31,14 @@ const App = () => {
     setNewNumber(number)
   }
 
+
+  const makeChange = (message) => {
+    setChangeMade(message)
+    setTimeout(() => {
+      setChangeMade(null)
+    }, 3000)
+  }
+
   const addNewName = (event) => {
     event.preventDefault()
     const person_names = persons.map(person => person.name)
@@ -45,6 +54,7 @@ const App = () => {
         setPersons(persons.concat(responseData))
         setNewName("")
         setNewNumber("")
+        makeChange(`Added ${newPerson.name}`)
       })
 
     } else {
@@ -55,7 +65,16 @@ const App = () => {
         }
         const id = persons.filter(person => person.name == newName)[0].id
         phoneService.update(id, newPerson)
-        setChangeMade(id)
+        .then(makeChange(`Changed the number of ${newName}`))
+        .catch(error => {
+          setError(`Ìnformation of ${newName} has already been removed from server`)
+          setChangeMade(null)
+          setTimeout(() => {
+            setError(null)
+          }, 3000)
+        })
+        setNewName("")
+        setNewNumber("")
       }
     }
   }
@@ -73,12 +92,15 @@ const App = () => {
       phoneService.remove(id)
       const newData = persons.filter(person => person.id != id)
       setPersons(newData)
+      makeChange(`Deleted ${toDelete} from the phonebook`)
     }
   }
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+      <Notification message={changeMade} />
+      <Error message = {errorHappened}/>
       <Filter filter_str = {newFilter} handle = {handleFilterChange}/>
       <h3>add a new name</h3>
       <form>
@@ -103,6 +125,28 @@ const App = () => {
 
 }
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
 
+  return (
+    <div className="notification">
+      {message}
+    </div>
+  )
+}
+
+const Error = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
 
 export default App
