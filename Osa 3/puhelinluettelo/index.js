@@ -1,7 +1,15 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+
+morgan.token('data', function(req, res) {
+    return JSON.stringify(req.body)
+})
+
+app.use(morgan(':method :url :status :res[content-length] :response-time ms :data'))
+
 
 let persons = [
     {
@@ -49,6 +57,7 @@ app.get('/api/persons/:id', (req, res) => {
     } else {
         res.send(`<p>There is no person with id ${id}</p>`)
     }
+    morgan('tiny')
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -91,6 +100,13 @@ app.post('/api/persons', (req, res) => {
     res.json(person)
 
 })
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+  
+  app.use(unknownEndpoint)
+  
 
 const PORT = 3001
 app.listen(PORT, () => {
