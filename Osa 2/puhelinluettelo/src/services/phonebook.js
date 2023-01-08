@@ -1,7 +1,8 @@
 import axios from 'axios'
-const baseUrl = '/persons'
+const baseUrl = 'http://localhost:3001/api/persons'
 
 const getAll = () => {
+  console.log('getallissa')
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
@@ -18,6 +19,7 @@ const remove = id => {
 }
 
 const update = (id, newObject) => {
+  console.log('id servicessa', id)
   const request = axios.put(`${baseUrl}/${id}`, newObject)
   return request.then(response => response.data)
 }
@@ -29,8 +31,3 @@ const updateAll = newObject => {
 }
 
 export default { getAll, create, update, remove ,updateAll}
-
-// nyt ongelmana et palvelimella olevan datan tyyppi on muuttunut
-// pitäis keksii tapa palauttaa palvelimelle alkuperänen data
-
-// lisäks sää sovellus edelleen kesken osasta 2c

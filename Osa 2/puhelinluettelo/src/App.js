@@ -63,11 +63,12 @@ const App = () => {
           name: newName,
           number: newNumber
         }
-        const id = persons.filter(person => person.name == newName)[0].id
+        const id = persons.filter(person => person.name === newName)[0].id
+        console.log(id)
         phoneService.update(id, newPerson)
         .then(makeChange(`Changed the number of ${newName}`))
         .catch(error => {
-          setError(`Ìnformation of ${newName} has already been removed from server`)
+          setError(`Information of ${newName} has already been removed from server`)
           setChangeMade(null)
           setTimeout(() => {
             setError(null)
@@ -87,10 +88,10 @@ const App = () => {
   const handleDelete = (event) => {
     const id = event.target.value
     console.log(id)
-    const toDelete = persons.filter(person => person.id == id)[0].name
+    const toDelete = persons.filter(person => person.id === id)[0].name
     if (window.confirm(`do you really want to delete ${toDelete}`)) {
       phoneService.remove(id)
-      const newData = persons.filter(person => person.id != id)
+      const newData = persons.filter(person => person.id !== id)
       setPersons(newData)
       makeChange(`Deleted ${toDelete} from the phonebook`)
     }
