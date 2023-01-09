@@ -50,11 +50,17 @@ const App = () => {
 
       phoneService
       .create(newPerson)
-      .then(responseData => {
-        setPersons(persons.concat(responseData))
+      .then(createdPerson => {
+        setPersons(persons.concat(createdPerson))
         setNewName("")
         setNewNumber("")
-        makeChange(`Added ${newPerson.name}`)
+        makeChange(`Added ${createdPerson.name}`)
+      })
+      .catch(error => {
+        setError(error.response.data.error)
+        setTimeout(() => {
+          setError(null)
+        }, 3000)
       })
 
     } else {
@@ -68,11 +74,12 @@ const App = () => {
         phoneService.update(id, newPerson)
         .then(makeChange(`Changed the number of ${newName}`))
         .catch(error => {
-          setError(`Information of ${newName} has already been removed from server`)
+          //setError(`Information of ${newName} has already been removed from server`)
+          setError(error.response.data.error)
           setChangeMade(null)
           setTimeout(() => {
             setError(null)
-          }, 3000)
+          }, 4000)
         })
         setNewName("")
         setNewNumber("")

@@ -62,27 +62,23 @@ app.delete('/api/persons/:id', (req, res, next) => {
 
 
 app.put('/api/persons/:id', (req, res, next) => {
-    console.log('putissa')
-    const filter = {_id: req.params.id}
-    const update = { number: req.body.number }
-    Person.findOneAndUpdate(filter, update, {new:true}).then(updatedPerson => {
-        res.json(updatedPerson)
+    const {name, number} = req.body
+    
+    Person.findByIdAndUpdate(
+        req.params.id,
+        { name, number },
+        { new: true, runValidators: true, context: 'query '}
+    )
+    .then(updatedNumber => {
+        res.json(updatedNumber)
     })
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body
 
-    if (!body.name || !body.number) {
-        return res.status(400).json({
-            error: "name or number missing"
-        })
-    }
-
     Person.find({}).then(persons => {
-        const number = persons.length
-        
         const names = persons.map(p => p.name)
 
         if (names.includes(body.name)) {
@@ -98,6 +94,7 @@ app.post('/api/persons', (req, res) => {
             newPerson.save().then(savedPerson => {
                 res.json(savedPerson)
             })
+            .catch(error => next(error))
         }
     })
 
@@ -113,6 +110,8 @@ const unknownEndpoint = (request, response) => {
     console.log(error.message)
     if (error.name === 'CastError') {
         return response.status(400).send({error: 'malformatted id'})
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message})
     }
     next(Error)
 }
