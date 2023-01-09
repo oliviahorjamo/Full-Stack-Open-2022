@@ -21,6 +21,7 @@
     "mongoose": "^6.8.3"
   },
   "devDependencies": {
+    "eslint": "^8.31.0",
     "nodemon": "^2.0.15"
   },
   "proxy": "http://localhost:3001"
