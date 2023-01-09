@@ -1,2 +1,2 @@
-The app is built on Heroku at:
+The app is built on Fly at:
 https://olivia-phonebook.fly.dev/
