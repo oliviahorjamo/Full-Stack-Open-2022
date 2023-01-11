@@ -5,6 +5,7 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const blog = require('../models/blog')
 
 // kirjota before each joka tyhjentää testitietokannan ja tallentaa sinne tietyt blogit
 // tarkista et tulokset samat kun oletetaan
@@ -147,6 +148,34 @@ describe('deletion of a blog', () => {
 
     expect(titles).not.toContain(blogToDelete.title)
 
+  })
+})
+
+describe('updating the number of likes of a blog', () => {
+  test('succeeds with status code 200 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToUpdate = blogsAtStart[0]
+
+    const newBlog = {
+      title: blogToUpdate.title,
+      url: blogToUpdate.url,
+      author: blogToUpdate.author,
+      likes: blogToUpdate.likes + 1
+    }
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(newBlog)
+      .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    updatedBlog = blogsAtEnd.filter(b => {
+      console.log(b)
+      return b.id === blogToUpdate.id
+    })
+
+    expect(updatedBlog[0].likes).toBe(blogToUpdate.likes + 1)
   })
 })
 
