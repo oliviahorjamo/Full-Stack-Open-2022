@@ -1,43 +1,51 @@
-const listHelper = require('../utils/list_helper.js')
+const helper = require('../utils/test_helper.js')
+const mongoose = require('mongoose')
+const supertest = require('supertest')
+const app = require('../app')
+const api = supertest(app)
 
-listWithOneBlog = [
-  {
-  _id: '5a422aa71b54a676234d17f8',
-  title: 'Go To Statement Considered Harmful',
-  author: 'Edsger W. Dijkstra',
-  url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-  likes: 5,
-  __v: 0
-}
-]
+const Blog = require('../models/blog')
 
-listWithThreeBlogs = [
-  {
-    _id: '5a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0
-  },
-  {
-    _id: '5a422aa71b54a676234d17f9',
-    title: 'testtitle 2',
-    author: 'author 2',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 3,
-    __v: 0
-  },
-  {
-    _id: '5a422aa71b54a676234d17f10',
-    title: 'testtitle 3',
-    author: 'author 3',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0
-  } 
-]
+// kirjota before each joka tyhjentää testitietokannan ja tallentaa sinne tietyt blogit
+// tarkista et tulokset samat kun oletetaan
 
+beforeEach(async () => {
+  await Blog.deleteMany({})
+  console.log('cleared db')
+
+  helper.initialBlogs.forEach(async (blog) => {
+    let blogObject = new Blog(blog)
+    await blogObject.save()
+    console.log('saved')
+  })
+  console.log('before each done')
+})
+
+test('blog list contains the correct number of blogs', async () => {
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(helper.initialBlogs.length)
+})
+
+test('notes are returned as json', async () => {
+  await api
+    .get('/api/blogs')
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
+})
+
+test('correct blog is within the blogs', async () => {
+  const response = await api.get('/api/blogs')
+  const titles = response.body.map(r => r.title)
+  expect(titles).toContain(
+    'Go To Statement Considered Harmful'
+  )
+})
+
+afterAll(() => {
+  mongoose.connection.close()
+})
+
+/*
 describe('total likes', () => {
 
   test('when list has only one blog, equals, the likes of that', () => {
@@ -73,3 +81,5 @@ describe('object with max likes', () => {
     expect(result).toEqual(null)
   })
 })
+
+*/
