@@ -13,12 +13,12 @@ beforeEach(async () => {
   await Blog.deleteMany({})
   console.log('cleared db')
 
-  helper.initialBlogs.forEach(async (blog) => {
-    let blogObject = new Blog(blog)
-    await blogObject.save()
-    console.log('saved')
-  })
-  console.log('before each done')
+  const blogObjects = helper.initialBlogs
+    .map(blog => new Blog(blog))
+  const promiseArray = blogObjects.map(blog => blog.save())
+  await Promise.all(promiseArray)
+
+ console.log('each note saved')
 })
 
 test('blog list contains the correct number of blogs', async () => {
@@ -46,6 +46,25 @@ test('unique identifier is named id', async () => {
   response.body.forEach(blog => {
     expect(blog.id).toBeDefined()
   }
+  )
+})
+
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'testtitle3'
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+  const titles = blogsAtEnd.map(b => b.title)
+  expect(titles).toContain(
+    'testtitle3'
   )
 })
 
