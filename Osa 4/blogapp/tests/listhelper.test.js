@@ -68,6 +68,33 @@ test('a valid blog can be added', async () => {
   )
 })
 
+test('missing like property is set to 0', async () => {
+  const newBlog = {
+    title: 'testtitle'
+  }
+
+  console.log('testing that missing likes works')
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  console.log('added to database')
+
+  allBlogs = await helper.blogsInDb()
+
+  const addedBlog = allBlogs.filter(b => {
+    return b.title === newBlog.title
+  })
+
+  console.log(addedBlog[0])
+
+  expect(addedBlog[0].likes).toBe(0)
+  
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
