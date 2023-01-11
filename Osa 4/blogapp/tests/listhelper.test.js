@@ -11,43 +11,41 @@ const Blog = require('../models/blog')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  console.log('cleared db')
-
-  const blogObjects = helper.initialBlogs
-    .map(blog => new Blog(blog))
-  const promiseArray = blogObjects.map(blog => blog.save())
-  await Promise.all(promiseArray)
-
- console.log('each note saved')
+  await Blog.insertMany(helper.initialBlogs)
 })
 
-test('blog list contains the correct number of blogs', async () => {
-  const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(helper.initialBlogs.length)
+describe('when there are inititally some notes saved', () => {
+  test('blog list contains the correct number of blogs', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body).toHaveLength(helper.initialBlogs.length)
+  })
+  
+  test('notes are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+  
+  test('a specific blog blog is within the blogs', async () => {
+    const response = await api.get('/api/blogs')
+    const titles = response.body.map(r => r.title)
+    expect(titles).toContain(
+      'Go To Statement Considered Harmful'
+    )
+  })
+
+  test('unique identifier is named id', async () => {
+    const response = await api.get('/api/blogs')
+    response.body.forEach(blog => {
+      expect(blog.id).toBeDefined()
+    }
+    )
+  })  
 })
 
-test('notes are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
 
-test('correct blog is within the blogs', async () => {
-  const response = await api.get('/api/blogs')
-  const titles = response.body.map(r => r.title)
-  expect(titles).toContain(
-    'Go To Statement Considered Harmful'
-  )
-})
-
-test('unique identifier is named id', async () => {
-  const response = await api.get('/api/blogs')
-  response.body.forEach(blog => {
-    expect(blog.id).toBeDefined()
-  }
-  )
-})
+describe('adding a valid blog', () => {
 
 test('a valid blog can be added', async () => {
   const newBlog = {
@@ -95,34 +93,61 @@ test('missing like property is set to 0', async () => {
 
   expect(addedBlog[0].likes).toBe(0)
 
+  })
 })
 
-test('blog with missing title receives status code 400', async () => {
-  const newBlog = {
-    url: 'jeeurl'
-  }
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
+describe('adding an invalid blog', () => {
 
-    const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  test('blog with missing title receives status code 400', async () => {
+    const newBlog = {
+      url: 'jeeurl'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
+
+  test('blog with missing url receives status code 400', async () => {
+    const newBlog = {
+      title: 'testititle'
+    }
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+  })
 })
 
-test('blog with missing url receives status code 400', async () => {
-  const newBlog = {
-    title: 'testititle'
-  }
+describe('deletion of a blog', () => {
+  test('succeeds with status code 204 if id is valid', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
 
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(400)
-
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+    
     const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+
+    expect(blogsAtEnd).toHaveLength(
+      helper.initialBlogs.length - 1
+    )
+
+    const titles = blogsAtEnd.map(b => b.title)
+
+    expect(titles).not.toContain(blogToDelete.title)
+
+  })
 })
 
 afterAll(() => {

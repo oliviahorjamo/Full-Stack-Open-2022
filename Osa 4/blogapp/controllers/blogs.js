@@ -19,6 +19,11 @@ blogRouter.post('/api/blogs', async(request, response) => {
   response.status(201).json(savedBlog)
 })
 
-
+blogRouter.delete('/api/blogs/:id', async(request, response) => {
+  console.log('poistetaan blogi')
+  const id = request.params.id
+  await Blog.findByIdAndRemove(id)
+  response.status(204).end()
+})
 
 module.exports = blogRouter
