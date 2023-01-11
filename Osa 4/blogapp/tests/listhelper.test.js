@@ -51,7 +51,8 @@ test('unique identifier is named id', async () => {
 
 test('a valid blog can be added', async () => {
   const newBlog = {
-    title: 'testtitle3'
+    title: 'testtitle3',
+    url: 'testiurl'
   }
   await api
     .post('/api/blogs')
@@ -70,7 +71,8 @@ test('a valid blog can be added', async () => {
 
 test('missing like property is set to 0', async () => {
   const newBlog = {
-    title: 'testtitle'
+    title: 'testtitle',
+    url: 'testiurl'
   }
 
   console.log('testing that missing likes works')
@@ -92,7 +94,35 @@ test('missing like property is set to 0', async () => {
   console.log(addedBlog[0])
 
   expect(addedBlog[0].likes).toBe(0)
-  
+
+})
+
+test('blog with missing title receives status code 400', async () => {
+  const newBlog = {
+    url: 'jeeurl'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
+test('blog with missing url receives status code 400', async () => {
+  const newBlog = {
+    title: 'testititle'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
 afterAll(() => {
