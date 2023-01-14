@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+//const jwt = require('jsonwebtoken')
 const blogRouter = require('express').Router()
 const { request, response } = require('../app')
 const Blog = require('../models/blog')
@@ -13,6 +13,8 @@ const getTokenFrom = request => {
 }
 
 blogRouter.get('/', async(request, response) => {
+  console.log('getissä blog routerissa')
+  console.log(request.body)
   const blogs = await Blog
     .find({})
     .populate('user', { username: 1, name: 1 })
@@ -21,15 +23,7 @@ blogRouter.get('/', async(request, response) => {
 
 blogRouter.post('/', async(request, response) => {
   body = request.body
-  const token = body.token
-  console.log(token)
-  //const body = request.body
-  //const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
-  const user = await User.findById(decodedToken.id)
+  const user = body.user
 
   const blog = new Blog({
     title: body.title,
@@ -45,10 +39,24 @@ blogRouter.post('/', async(request, response) => {
 })
 
 blogRouter.delete('/:id', async(request, response) => {
-  console.log('poistetaan blogi')
-  const id = request.params.id
-  await Blog.findByIdAndRemove(id)
-  response.status(204).end()
+  
+  const user = request.body.user
+  const blog = await Blog.findById(request.params.id)
+
+  if (!blog) {
+    response.status(404).json({
+      error: 'this blog has already been deleted'
+    })
+  }
+
+  if (blog.user.toString() === user.id.toString()) {
+    const blogId = request.params.id
+    await Blog.findByIdAndRemove(blogId)
+    response.status(204).end()
+  } else {
+    return response.status(401).json({ error: 'no right to delete this blog' })
+  }
+
 })
 
 blogRouter.put('/:id', async(request, response) => {
