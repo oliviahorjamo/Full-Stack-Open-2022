@@ -19,6 +19,12 @@ const App = () => {
 
   useEffect(() => {
     console.log('use effect jotta tarkistetaan onko tiedot jo muistissa')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
   }, [])
 
   // funktio jolla käsitellään käyttäjän sisäänkirjautuminen
@@ -29,6 +35,12 @@ const App = () => {
     const user = await loginService.login({
       username, password
     })
+    
+    // aseta käyttäjä muistiin
+    window.localStorage.setItem(
+      'loggedBlogappUser', JSON.stringify(user)
+    )
+
     // kutsu login servicen set token funktiota jolla asetetaan
     // tokenin arvo muistiin
     blogService.setToken(user.token)
@@ -39,6 +51,14 @@ const App = () => {
     console.log('error')
     console.log(exception)
   }
+  }
+
+  const handleLogout = async (event) => {
+    event.preventDefault()
+    console.log('logging out')
+    setUser(null)
+    window.localStorage.removeItem('loggedBlogappUser')
+    blogService.removeToken()
   }
 
   const loginForm = () => (
@@ -72,6 +92,8 @@ const App = () => {
       {user === null ?
     loginForm() :
     <div>
+    <p>Logged in as {user.name}</p>
+    <button onClick = {handleLogout}>logout</button>
     <h2>blogs</h2>
     {blogs.map(blog =>
       <Blog key={blog.id} blog={blog} />
