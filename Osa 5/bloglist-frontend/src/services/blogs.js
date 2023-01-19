@@ -18,4 +18,14 @@ const removeToken = () => {
   token = null
 }
 
-export default { getAll, setToken, removeToken }
+const create = async newBlog => {
+  console.log('luomassa uutta blogia')
+  console.log(newBlog)
+  const config = {
+    headers: { Authorization: token }
+  }
+  const response = await axios.post(baseUrl, newBlog, config)
+  return response.data
+}
+
+export default { getAll, setToken, removeToken, create }
