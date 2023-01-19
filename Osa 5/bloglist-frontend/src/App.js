@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -13,6 +14,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -29,6 +31,14 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const setNewMessage = (message) => {
+    console.log(message)
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 3000)
+  }
 
   // funktio jolla käsitellään käyttäjän sisäänkirjautuminen
   const handleLogin = async (event) => {
@@ -53,6 +63,7 @@ const App = () => {
   } catch (exception) {
     console.log('error')
     console.log(exception)
+    setNewMessage('wrong username or password')
   }
   }
 
@@ -82,8 +93,12 @@ const App = () => {
       setAuthor('')
       setTitle('')
       setUrl('')
+      setNewMessage(
+        `a new blog ${blogObject.title} added`
+      )
     } catch (exception) {
       console.log('virhe blogin lisäämisessä')
+      setNewMessage('could not add a new blog')
     }
   }
 
@@ -150,6 +165,7 @@ const App = () => {
   return (
 
   <div>
+    <Notification message={message}/>
     {user === null ?
       loginForm() :
       <div>
