@@ -1,35 +1,78 @@
 const helper = require('../utils/test_helper.js')
+const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 
-const Blog = require('../models/blog')
-const blog = require('../models/blog')
+//let auth = {Authorization: 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9saXZpYWhvcmoiLCJpZCI6IjYzYzI3YmNhOGVjYTNhMzI3ZGJiYmFmYyIsImlhdCI6MTY3MzY5MTk2Mn0.3_2DzbZt8OzqWmcQlRudJnKqncn3JbP8D3njG09x6BY'}
 
-// kirjota before each joka tyhjentää testitietokannan ja tallentaa sinne tietyt blogit
-// tarkista et tulokset samat kun oletetaan
+const Blog = require('../models/blog')
+const User = require('../models/user')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
 })
 
-describe('when there are inititally some notes saved', () => {
+beforeAll(async () => {
+  await User.deleteMany({})
+
+  const newUser = {
+    username: 'testuser',
+    name: 'Test User',
+    password: 'test'
+  }
+
+  const resultUser = await api
+    .post('/api/users')
+    .set('Content-Type', 'application/json')
+    .send(newUser)
+    .expect(201)
+
+  const user = {
+    username: 'testuser',
+    password: 'test'
+  }
+
+  console.log('user määritelty')
+
+  const result = await api
+    .post('/api/login')
+    .send(user)
+    .expect(200)
+
+  let token = result.body.token
+  token = `Bearer ${token}`
+
+  console.log('token', token)
+  // Todo
+  // jatka tästä selvittämistä miks auth on taas ei määritelty
+  auth = {Authorization: token}
+  userId = resultUser.body.id
+
+})
+
+describe('when there are inititally some blogs saved', () => {
   test('blog list contains the correct number of blogs', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api
+      .get('/api/blogs')
+      .set(auth)
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
   
   test('notes are returned as json', async () => {
     await api
       .get('/api/blogs')
+      .set(auth)
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
   
   test('a specific blog blog is within the blogs', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api
+      .get('/api/blogs')
+      .set(auth)
     const titles = response.body.map(r => r.title)
     expect(titles).toContain(
       'Go To Statement Considered Harmful'
@@ -37,7 +80,10 @@ describe('when there are inititally some notes saved', () => {
   })
 
   test('unique identifier is named id', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api
+      .get('/api/blogs')
+      .set(auth)
+
     response.body.forEach(blog => {
       expect(blog.id).toBeDefined()
     }
@@ -48,53 +94,63 @@ describe('when there are inititally some notes saved', () => {
 
 describe('adding a valid blog', () => {
 
-test('a valid blog can be added', async () => {
-  const newBlog = {
-    title: 'testtitle3',
-    url: 'testiurl'
-  }
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
+  test('a valid blog can be added', async () => {
+    const userAddingBlog = await helper.usersInDb()[0]
+    // jostain syystä palautetaan vaan tyhjä lista
+    //console.log('user who added blog', userAddingBlog)
 
-  const blogsAtEnd = await helper.blogsInDb()
-  expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+    console.log('userid', userId)
+    console.log('user who adds blog', userAddingBlog)
 
-  const titles = blogsAtEnd.map(b => b.title)
-  expect(titles).toContain(
-    'testtitle3'
-  )
-})
+    const newBlog = {
+      title: 'testtitle3',
+      url: 'testiurl',
+      user: userId
+    }
+    await api
+      .post('/api/blogs')
+      .set(auth)
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
 
-test('missing like property is set to 0', async () => {
-  const newBlog = {
-    title: 'testtitle',
-    url: 'testiurl'
-  }
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-  console.log('testing that missing likes works')
-
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-
-  console.log('added to database')
-
-  allBlogs = await helper.blogsInDb()
-
-  const addedBlog = allBlogs.filter(b => {
-    return b.title === newBlog.title
+    const titles = blogsAtEnd.map(b => b.title)
+    expect(titles).toContain(
+      'testtitle3'
+    )
   })
 
-  console.log(addedBlog[0])
+  test('missing like property is set to 0', async () => {
+    const newBlog = {
+      title: 'testtitle',
+      url: 'testiurl'
+    }
 
-  expect(addedBlog[0].likes).toBe(0)
+    console.log('testing that missing likes works')
 
-  })
+    await api
+      .post('/api/blogs')
+      .set(auth)
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    console.log('added to database')
+
+    allBlogs = await helper.blogsInDb()
+
+    const addedBlog = allBlogs.filter(b => {
+      return b.title === newBlog.title
+    })
+
+    console.log(addedBlog[0])
+
+    expect(addedBlog[0].likes).toBe(0)
+
+    })
 })
 
 
@@ -121,6 +177,7 @@ describe('adding an invalid blog', () => {
 
     await api
       .post('/api/blogs')
+      .set(auth)
       .send(newBlog)
       .expect(400)
 
@@ -136,6 +193,7 @@ describe('deletion of a blog', () => {
 
     await api
       .delete(`/api/blogs/${blogToDelete.id}`)
+      .set(auth)
       .expect(204)
     
     const blogsAtEnd = await helper.blogsInDb()
@@ -165,6 +223,7 @@ describe('updating the number of likes of a blog', () => {
 
     await api
       .put(`/api/blogs/${blogToUpdate.id}`)
+      .set(auth)
       .send(newBlog)
       .expect(200)
 

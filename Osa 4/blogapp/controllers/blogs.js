@@ -25,6 +25,8 @@ blogRouter.post('/', async(request, response) => {
   body = request.body
   const user = body.user
 
+  console.log('user blog postissa', user)
+
   const blog = new Blog({
     title: body.title,
     author: body.author,
