@@ -33,11 +33,18 @@ const App = () => {
     }
   }, [])
 
-  const FindBlogs = () => {
-    console.log('haetaan uudet blogit')
-    blogService.getAll().then(blogs => 
-      setBlogs(blogs)
-      )
+
+  const FindBlogs = async () => {
+    let blogs = await blogService.getAll()
+    blogs = blogs.sort(function(a, b) {
+      if (a.likes < b.likes) return 1;
+      if (a.likes > b.likes) return -1;
+      return 0
+    })
+    setBlogs(blogs)
+    //.then(blogs => 
+    //  setBlogs(blogs)
+    //  )
   }
 
   const setNewMessage = (message) => {
