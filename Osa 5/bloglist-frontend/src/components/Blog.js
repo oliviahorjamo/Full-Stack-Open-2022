@@ -1,11 +1,25 @@
-import { useState } from "react"
+//import { useState } from "react"
 
 import Togglable from "./Togglable"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleLike }) => {
   //const [showBlog, setVisible] = useState(false)
 
-  console.log(blog)
+  const likeBlog = (event) => {
+    event.preventDefault()
+
+    const blogId = event.target.id
+
+    const blogObject = {
+      user: blog.user.id,
+      likes: blog.likes + 1,
+      author: blog.author,
+      title: blog.title,
+      url: blog.url
+    }
+
+    handleLike(blogObject, blogId)
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -19,7 +33,7 @@ const Blog = ({ blog }) => {
     <div>
       <p>{blog.url}</p>
       <p>likes {blog.likes}</p>
-      <button>like</button>
+      <button onClick={likeBlog} id={blog.id}>like</button>
       <p>{blog.user.name}</p>
     </div>
   )
