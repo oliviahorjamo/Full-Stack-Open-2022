@@ -111,6 +111,12 @@ const App = () => {
       .then(FindBlogs)
   }
 
+  const deleteBlog = (blogId) => {
+    blogService
+      .remove(blogId)
+      .then(FindBlogs)
+  }
+
   const loginForm = () => (
     // form käyttäjän sisäänkirjautumiselle
   <form onSubmit = {handleLogin}>
@@ -155,7 +161,13 @@ const App = () => {
 
       <h2>blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={likeBlog}/>
+        <Blog
+          key={blog.id}
+          blog={blog}
+          handleLike={likeBlog}
+          handleDelete={deleteBlog}
+          user={user}
+          />
       )}
       </div>
     }
