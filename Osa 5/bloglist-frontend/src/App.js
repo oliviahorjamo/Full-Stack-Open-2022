@@ -5,14 +5,13 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   // aseta käyttäjä jossa tiedossa token
   const [user, setUser] = useState(null)
   // aseta käyttäjänimi ja salasana jotka käyttäjä antaa
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
 
   const blogFormRef = useRef()
@@ -37,14 +36,11 @@ const App = () => {
   const FindBlogs = async () => {
     let blogs = await blogService.getAll()
     blogs = blogs.sort(function(a, b) {
-      if (a.likes < b.likes) return 1;
-      if (a.likes > b.likes) return -1;
+      if (a.likes < b.likes) return 1
+      if (a.likes > b.likes) return -1
       return 0
     })
     setBlogs(blogs)
-    //.then(blogs => 
-    //  setBlogs(blogs)
-    //  )
   }
 
   const setNewMessage = (message) => {
@@ -56,30 +52,26 @@ const App = () => {
   }
 
   // funktio jolla käsitellään käyttäjän sisäänkirjautuminen
-  const handleLogin = async (event) => {
-    event.preventDefault()
+  const handleLogin = async (username, password) => {
     console.log('logging in with', username, password)
-  try {
-    const user = await loginService.login({
-      username, password
-    })
-    
-    // aseta käyttäjä muistiin
-    window.localStorage.setItem(
-      'loggedBlogappUser', JSON.stringify(user)
-    )
+    try {
+      const user = await loginService.login({
+        username, password
+      })
 
-    // kutsu login servicen set token funktiota jolla asetetaan
-    // tokenin arvo muistiin
-    blogService.setToken(user.token)
-    setUser(user)
-    setUsername('')
-    setPassword('')
-  } catch (exception) {
-    console.log('error')
-    console.log(exception)
-    setNewMessage('wrong username or password')
-  }
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+
+      // kutsu login servicen set token funktiota jolla asetetaan
+      // tokenin arvo muistiin
+      blogService.setToken(user.token)
+      setUser(user)
+    } catch (exception) {
+      console.log('error')
+      console.log(exception)
+      setNewMessage('wrong username or password')
+    }
   }
 
   const handleLogout = async (event) => {
@@ -91,7 +83,7 @@ const App = () => {
   }
 
   const addBlog = (blogObject) => {
-    
+
     blogFormRef.current.toggleVisibility()
 
     blogService
@@ -100,9 +92,9 @@ const App = () => {
         setBlogs(blogs.concat(returnedBlog))
       })
 
-      setNewMessage(
-        `a new blog ${blogObject.title} added`
-      )
+    setNewMessage(
+      `a new blog ${blogObject.title} added`
+    )
   }
 
   const likeBlog = (blogObject, blogId) => {
@@ -117,61 +109,35 @@ const App = () => {
       .then(FindBlogs)
   }
 
-  const loginForm = () => (
-    // form käyttäjän sisäänkirjautumiselle
-  <form onSubmit = {handleLogin}>
-    <div>
-      username
-        <input
-        type='text'
-        value={username}
-        name='Username'
-        onChange={({ target }) => setUsername(target.value)}
-        />
-    </div>
-    <div>
-      password
-        <input
-        type='password'
-        value={password}
-        name='Password'
-        onChange={({target}) => setPassword(target.value)}
-        ></input>
-    </div>
-    <button type='submit'>login</button>
-  </form>
-  )
-
   return (
 
-  <div>
-    <Notification message={message}/>
-    {user === null ?
+    <div>
+      <Notification message={message}/>
+      {user === null ?
 
-      loginForm() :
-      <div>
-      <p>Logged in as {user.name}</p>
-      <button onClick = {handleLogout}>logout</button>
-      
-      <Togglable buttonlabel='new blog' ref={blogFormRef}>
-        <BlogForm
-          createBlog={addBlog}
-        />
-      </Togglable>
+        <LoginForm handleSubmit={handleLogin}/> :
+        <div>
+          <p>Logged in as {user.name}</p>
+          <button onClick = {handleLogout}>logout</button>
+          <Togglable buttonLabel='new blog' ref={blogFormRef}>
+            <BlogForm
+              createBlog={addBlog}
+            />
+          </Togglable>
 
-      <h2>blogs</h2>
-      {blogs.map(blog =>
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={likeBlog}
-          handleDelete={deleteBlog}
-          user={user}
-          />
-      )}
-      </div>
-    }
-  </div>
+          <h2>blogs</h2>
+          {blogs.map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleLike={likeBlog}
+              handleDelete={deleteBlog}
+              user={user}
+            />
+          )}
+        </div>
+      }
+    </div>
   )
 }
 

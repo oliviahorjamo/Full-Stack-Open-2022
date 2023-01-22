@@ -1,6 +1,6 @@
 //import { useState } from "react"
 
-import Togglable from "./Togglable"
+import Togglable from './Togglable'
 
 const Blog = ({ blog, handleLike, handleDelete, user }) => {
   //const [showBlog, setVisible] = useState(false)
@@ -42,20 +42,20 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
     if (user.name === blog.user.name) {
       return (
         <div>
-        <p>{blog.url}</p>
-        <p>likes {blog.likes}</p>
-        <button onClick={likeBlog} id={blog.id}>like</button>
-        <p>{blog.user.name}</p>
-        <button onClick={deleteBlog} id={blog.id}>delete</button>
+          <p>{blog.url}</p>
+          <p>likes {blog.likes}</p>
+          <button onClick={likeBlog} id={blog.id}>like</button>
+          <p>{blog.user.name}</p>
+          <button onClick={deleteBlog} id={blog.id}>delete</button>
         </div>
       )
     } else {
       return (
         <div>
-        <p>{blog.url}</p>
-        <p>likes {blog.likes}</p>
-        <button onClick={likeBlog} id={blog.id}>like</button>
-        <p>{blog.user.name}</p>
+          <p>{blog.url}</p>
+          <p>likes {blog.likes}</p>
+          <button onClick={likeBlog} id={blog.id}>like</button>
+          <p>{blog.user.name}</p>
         </div>
       )
     }
@@ -65,11 +65,11 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
   return (
     <div style={blogStyle}>
       {blog.title} {blog.author}
-      <Togglable buttonlabel='view'>
+      <Togglable buttonLabel='view'>
         {additionalInformation()}
       </Togglable>
 
-    </div>  
+    </div>
 
   )
 
