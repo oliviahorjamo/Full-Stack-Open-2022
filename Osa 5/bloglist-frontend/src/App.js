@@ -113,6 +113,7 @@ const App = () => {
 
     <div>
       <Notification message={message}/>
+      
       {user === null ?
 
         <LoginForm handleSubmit={handleLogin}/> :
