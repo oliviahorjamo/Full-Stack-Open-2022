@@ -1,20 +1,9 @@
-//const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const blogRouter = require('express').Router()
-const { request, response } = require('../app')
-const Blog = require('../models/blog')
-const User = require('../models/user')
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
-    return authorization.substring(7)
-  }
-  return null
-}
+const Blog = require('../models/blog')
 
 blogRouter.get('/', async(request, response) => {
-  console.log('getissä blog routerissa')
-  console.log(request.body)
   const blogs = await Blog
     .find({})
     .populate('user', { username: 1, name: 1 })
@@ -22,56 +11,49 @@ blogRouter.get('/', async(request, response) => {
 })
 
 blogRouter.post('/', async(request, response) => {
-  body = request.body
-  const user = body.user
+  if (!request.user) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
 
-  console.log('user blog postissa', user)
+  const user = request.user
+  const blog = new Blog({ ...request.body, user: user.id })
 
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes || 0,
-    user: user._id
-  })
   const savedBlog = await blog.save()
+
   user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
+
   response.status(201).json(savedBlog)
 })
 
 blogRouter.delete('/:id', async(request, response) => {
   
-  const user = request.body.user
-  const blog = await Blog.findById(request.params.id)
+  const blogToDelete = await Blog.findById(request.params.id)
+  if (!blogToDelete ) {
+    return response.status(204).end()
+  }
 
-  if (!blog) {
-    response.status(404).json({
-      error: 'this blog has already been deleted'
+  if ( blogToDelete.user && blogToDelete.user.toString() !== request.user.id ) {
+    return response.status(401).json({
+      error: 'only the creator can delete a blog'
     })
   }
 
-  if (blog.user.toString() === user.id.toString()) {
-    const blogId = request.params.id
-    await Blog.findByIdAndRemove(blogId)
-    response.status(204).end()
-  } else {
-    return response.status(401).json({ error: 'no right to delete this blog' })
-  }
+  await Blog.findByIdAndRemove(request.params.id)
+
+  response.status(204).end()
 
 })
 
 blogRouter.put('/:id', async(request, response) => {
-  const body = request.body
+  const blog = request.body
 
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes
-  }
-
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  const updatedBlog = await Blog
+    .findByIdAndUpdate(
+      request.params.id,
+      blog,
+      { new: true, runValidators: true, context: 'query' }
+      )
   
   response.status(200).json(updatedBlog)
 })

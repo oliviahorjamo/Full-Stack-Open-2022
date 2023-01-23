@@ -1,7 +1,5 @@
 
 const Blog = require('../models/blog')
-const User = require('../models/user')
-
 
 const initialBlogs = [
   {
@@ -31,44 +29,8 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
-const usersInDb = async () => {
-  const users = await User.find({})
-  return users.map(u => u.toJSON())
-}
-
-/*
-
-const totalLikes = (blogs) => {
-  const reducer = (sum, item) => {
-    return sum + item.likes
-  }
-
-  return blogs.reduce(reducer, 0)
-}
-
-const favoriteBlog = (blogs) => {
-  if (blogs.length !== 0) {
-    max = blogs.reduce((prev, current) => (prev.y > current.y) ? prev : current)
-  } else {
-    max = null
-  }
-  return max
-}
-
-// nämä vielä tekemättä (4.6 ja 4.7)
-const mostBlogs = (blogs) => {
-  if (blogs.length === 0) {
-    return null
-  }
-  const authors = {}
-
-}
-
-*/
-
 module.exports = {
   nonExistingId,
   blogsInDb,
-  initialBlogs,
-  usersInDb
+  initialBlogs
 }

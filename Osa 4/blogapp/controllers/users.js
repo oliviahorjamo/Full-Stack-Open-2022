@@ -1,15 +1,13 @@
 const bcrypt = require('bcrypt')
-const { response } = require('../app')
 const userRouter = require('express').Router()
 const User = require('../models/user')
 
 userRouter.post('/', async (request, response) => {
   const { username, name, password } = request.body
 
-  console.log('body users postissa', request.body )
-  if (password.length < 3) {
+  if (! password || password.length < 3) {
     return response.status(400).json({
-      error: 'password less than 3 characters long'
+      error: 'invalid password'
     })
   }
 
