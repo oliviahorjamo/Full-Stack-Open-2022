@@ -72,7 +72,7 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
   if (visible) {
     return (
       <div style={blogStyle}>
-        {blog.title} {blog.author}
+        {blog.title} by {blog.author}
         {additionalInformation()}
         <button style={showWhenVisible} onClick={toggleVisibility}>
           cancel
@@ -83,7 +83,7 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
   } else {
     return (
       <div style={blogStyle}>
-        {blog.title} {blog.author}
+        {blog.title} by {blog.author}
         <button style={hideWhenVisible} onClick={toggleVisibility}>
           show
         </button>
