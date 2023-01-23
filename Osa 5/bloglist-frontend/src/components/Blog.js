@@ -1,9 +1,16 @@
-//import { useState } from "react"
+import { useState } from 'react'
 
-import Togglable from './Togglable'
+//import Togglable from './Togglable'
 
 const Blog = ({ blog, handleLike, handleDelete, user }) => {
-  //const [showBlog, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false)
+
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
+
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
 
   const likeBlog = (event) => {
     event.preventDefault()
@@ -62,16 +69,28 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
 
   }
 
-  return (
-    <div style={blogStyle}>
-      {blog.title} {blog.author}
-      <Togglable buttonLabel='view'>
+  if (visible) {
+    return (
+      <div style={blogStyle}>
+        {blog.title} {blog.author}
         {additionalInformation()}
-      </Togglable>
+        <button style={showWhenVisible} onClick={toggleVisibility}>
+          cancel
+        </button>
+      </div>
 
-    </div>
+    )
+  } else {
+    return (
+      <div style={blogStyle}>
+        {blog.title} {blog.author}
+        <button style={hideWhenVisible} onClick={toggleVisibility}>
+          show
+        </button>
+      </div>
 
-  )
+    )
+  }
 
 }
 
