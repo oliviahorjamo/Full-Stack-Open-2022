@@ -51,7 +51,7 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
         <div>
           <p>{blog.url}</p>
           <p>likes {blog.likes}</p>
-          <button onClick={likeBlog} id={blog.id}>like</button>
+          <button onClick={likeBlog} id={blog.id} className='like-button'>like</button>
           <p>{blog.user.name}</p>
           <button onClick={deleteBlog} id={blog.id}>delete</button>
         </div>
@@ -61,7 +61,7 @@ const Blog = ({ blog, handleLike, handleDelete, user }) => {
         <div>
           <p>{blog.url}</p>
           <p>likes {blog.likes}</p>
-          <button onClick={likeBlog} id={blog.id}>like</button>
+          <button onClick={likeBlog} id={blog.id} className='like-button'>like</button>
           <p>{blog.user.name}</p>
         </div>
       )

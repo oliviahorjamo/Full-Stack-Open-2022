@@ -40,6 +40,8 @@ const App = () => {
       if (a.likes > b.likes) return -1
       return 0
     })
+    console.log('haetaan uudet blogit')
+    console.log(blogs)
     setBlogs(blogs)
   }
 
@@ -85,6 +87,12 @@ const App = () => {
   const addBlog = (blogObject) => {
 
     blogFormRef.current.toggleVisibility()
+
+    console.log('blogobject before', blogObject)
+
+    //const newBlogObject = { ...blogObject, likes: 0 }
+
+    //console.log('blogobject after', newBlogObject)
 
     blogService
       .create(blogObject)

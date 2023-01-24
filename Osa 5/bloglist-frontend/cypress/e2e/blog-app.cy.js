@@ -43,13 +43,33 @@ describe('Blog app', function() {
       })
     })
 
-    it.only('A blog can be created', function() {
+    it('A blog can be created', function() {
       cy.contains('new blog').click()
       cy.get('#title-field').type('Test Title')
       cy.get('#author-field').type('Test Author')
       cy.get('#url-field').type('Test Url')
       cy.get('#create-button').click()
       cy.contains('Test Title')
+    })
+
+    describe('When there is initally a blog', function() {
+      beforeEach(function() {
+        const blog = {
+          title: 'First test title',
+          author: 'First test author',
+          url: 'wwww.testurl.com'
+        }
+        cy.createBlog(blog)
+        cy.contains('First test title')
+        })
+
+      it('user can like a blog', function() {
+        cy.contains('First test title')
+          .contains('show')
+          .click()
+        cy.get('.like-button').click()
+        cy.contains('likes 1')
+      })
     })
   })
 })
