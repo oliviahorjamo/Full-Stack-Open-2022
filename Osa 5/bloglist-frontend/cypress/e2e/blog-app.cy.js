@@ -70,6 +70,16 @@ describe('Blog app', function() {
         cy.get('.like-button').click()
         cy.contains('likes 1')
       })
+
+      it.only('the user who created the blog can delete it', function() {
+        cy.contains('First test title')
+          .contains('show')
+          .click()
+        cy.get('.delete-button').click()
+        cy.on('window:confirm', () => true)
+        cy.get('html').should('not.contain', 'First test title')
+        
+      })
     })
   })
 })
