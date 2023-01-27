@@ -7,6 +7,16 @@ const anecdotesAtStart = [
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
 
+const byVotes = (a1, a2) => {
+  if (a2.votes > a1.votes) {
+    return 1
+  } else {
+    return -1
+  }
+}
+
+//a2.votes>a1.votes ? 1 : -1
+
 const getId = () => (100000 * Math.random()).toFixed(0)
 
 const asObject = (anecdote) => {
@@ -17,7 +27,7 @@ const asObject = (anecdote) => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+const initialState = anecdotesAtStart.map(asObject).sort(byVotes)
 
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
@@ -27,8 +37,9 @@ const reducer = (state = initialState, action) => {
       const id = action.data.id
       const votedAnecdote = state.find(s => s.id === id)
       const updatedAnecdote = {...votedAnecdote, votes: votedAnecdote.votes+1}
-      return state.map(a =>
+      const newState =  state.map(a =>
         a.id !== id ? a : updatedAnecdote)
+      return newState.sort(byVotes)
       }
     case 'NEW_ANECDOTE': {
       return [...state, action.data]
