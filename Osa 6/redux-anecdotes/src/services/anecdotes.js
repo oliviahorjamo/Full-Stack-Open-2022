@@ -13,4 +13,19 @@ const createNew = async (content) => {
   return response.data
 }
 
-export default { getAll, createNew }
+const updateVotes = async (id) => {
+  console.log('updating in service')
+  const response = await axios.get(baseUrl)
+  const anecdotes = response.data
+  console.log(anecdotes)
+  const anecdoteToUpdate = anecdotes.find(a => a.id === id)
+  console.log(anecdoteToUpdate)
+  const newAnecdote = {...anecdoteToUpdate, votes: anecdoteToUpdate.votes + 1}
+  //console.log(newAnecdote)
+  //const newAnecdotes = anecdotes.map(a => a.id === id ? newAnecdote : a)
+  //console.log(newAnecdotes)
+  const responseAnecdote = await axios.put(`${baseUrl}/${id}`, newAnecdote)
+  return responseAnecdote.data
+}
+
+export default { getAll, createNew, updateVotes }
