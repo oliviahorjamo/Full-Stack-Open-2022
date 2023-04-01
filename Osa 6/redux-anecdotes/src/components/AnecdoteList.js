@@ -1,28 +1,34 @@
 import { useDispatch, useSelector } from "react-redux";
-import { voteAnecdote } from "../reducers/anecdoteReducer";
-import { setNotificationWithTimeout } from "../reducers/notificationReducer";
-import Filter from './Filter.js'
+import { updateAnecdote } from "../reducers/anecdoteReducer";
+//import { addNotification } from "../reducers/notificationReducer";
+import { setNotification } from "../reducers/notificationReducer";
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => {
-    return state.anecdotes.filter(a => a.content.includes(state.filter))
+  const anecdotes = useSelector(({ filter, anecdotes }) => {
+    return anecdotes.filter(a => a.content.includes(filter))
   })
+  anecdotes.sort((a1, a2) => a2.votes - a1.votes)
   const dispatch = useDispatch()
 
   const vote = (id) => {
     console.log('vote', id)
-    // voteAnecoten pitäis äänestää tällä kyseisellä id:llä olevaa anekdoottia
-    dispatch(voteAnecdote(id))
-    const anecdoteContent = anecdotes.find(a => a.id === id).content
-    dispatch(setNotificationWithTimeout(`you voted "${anecdoteContent}"`, 2))
-    
+    dispatch(updateAnecdote(id))
+    // here set the time dependent notification
+    const anecdote = anecdotes.find(a => a.id === id)
+    dispatch(setNotification(`you voted ${anecdote.content}`, 4))
+    /*
+    dispatch(addNotification(`You voted for "${anecdote.content}"`))
+    setTimeout(() => {
+      dispatch(removeNotification())
+    }, 4000)
+    */
   }
 
   return (
     <div>
+
       <h2>Anecdotes</h2>
-      <Filter />
-      {anecdotes.map(anecdote =>
+        {anecdotes.map(anecdote =>
         <div key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -33,7 +39,7 @@ const AnecdoteList = () => {
           </div>
         </div>
       )}
-      </div>
+    </div>
   )
 }
 

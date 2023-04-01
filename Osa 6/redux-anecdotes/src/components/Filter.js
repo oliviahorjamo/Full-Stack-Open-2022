@@ -1,15 +1,14 @@
+// a component for the filter
 import { useDispatch } from "react-redux"
-import { useState } from "react"
-import { setFilter } from "../reducers/filterReducer"
+import { changeFilter } from "../reducers/filterReducer"
 
 const Filter = () => {
-  const [filter, setFilterText] = useState('')
   const dispatch = useDispatch()
 
   const handleChange = (event) => {
-    setFilterText(event.target.value)
-    dispatch(setFilter(event.target.value))
     // input-field value is in variable event.target.value
+    const filter = event.target.value
+    dispatch(changeFilter(filter))
   }
   const style = {
     marginBottom: 10
@@ -17,8 +16,7 @@ const Filter = () => {
 
   return (
     <div style={style}>
-      filter <input 
-      value = {filter} onChange={handleChange} />
+      filter <input onChange={handleChange} />
     </div>
   )
 }
