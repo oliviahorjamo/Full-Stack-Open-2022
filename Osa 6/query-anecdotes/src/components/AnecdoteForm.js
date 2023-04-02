@@ -1,12 +1,18 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query'
 import { getAnecdotes, newAnecdote } from '../requests'
+import { setNotification } from '../AnecdoteContext'
+import { useNotificationDispatch } from '../AnecdoteContext'
 
 const AnecdoteForm = () => {
+  const dispatch = useNotificationDispatch()
   const queryClient = useQueryClient()
 
   const newAnecdoteMutation = useMutation(newAnecdote, {
     onSuccess: () => {
       queryClient.invalidateQueries('anecdotes')
+    },
+    onError: () => {
+      setNotification('anecdote too short', 5)(dispatch)
     }
   })
   
@@ -17,6 +23,7 @@ const AnecdoteForm = () => {
     event.target.anecdote.value = ''
     console.log('new anecdote')
     newAnecdoteMutation.mutate({content, votes: 0})
+    // should the new notification be created here in case the mutation doesn't work?
 }
 
   return (
