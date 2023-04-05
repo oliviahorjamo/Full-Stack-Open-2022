@@ -39,6 +39,16 @@
       "content": "test1",
       "votes": 0,
       "id": 8
+    },
+    {
+      "content": "testi 5.4.",
+      "votes": 0,
+      "id": 9
+    },
+    {
+      "content": "testi 2 5.4.",
+      "votes": 0,
+      "id": 10
     }
   ]
 }

@@ -10,6 +10,7 @@ const AnecdoteList = () => {
   anecdotes.sort((a1, a2) => a2.votes - a1.votes)
   const dispatch = useDispatch()
 
+  /*
   const vote = (id) => {
     console.log('vote', id)
     dispatch(updateAnecdote(id))
@@ -21,7 +22,6 @@ const AnecdoteList = () => {
     setTimeout(() => {
       dispatch(removeNotification())
     }, 4000)
-    */
   }
 
   return (
@@ -37,6 +37,20 @@ const AnecdoteList = () => {
             has {anecdote.votes}
             <button onClick={() => vote(anecdote.id)}>vote</button>
           </div>
+        </div>
+      )}
+    </div>
+  )
+  */
+
+  return (
+    <div>
+      <h2>Anecdotes</h2>
+        {anecdotes.map(anecdote =>
+        <div key={anecdote.id}>
+          <li>
+            {anecdote.content}
+          </li>
         </div>
       )}
     </div>
