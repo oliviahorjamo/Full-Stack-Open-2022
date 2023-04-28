@@ -1,3 +1,5 @@
+
+
 let token = null
 
 const STORAGE_KEY = 'loggedBlogAppUser'
@@ -26,6 +28,7 @@ const clearUser = () => {
   localStorage.clear()
   token = null
 }
+
 
 const getToken = () => token
 

@@ -30,10 +30,10 @@ export const logUserIn = ({ username, password }) => {
       console.log('user was logged in', user)
       userService.setUser(user)
       console.log('user logged in and saved')
-      dispatch(notifyWithTimeOut({ message:'welcome!', type:'info' }, 3))
+      dispatch(notifyWithTimeOut('welcome!'))
       dispatch(setUser(user))
     } catch(e) {
-      dispatch(notifyWithTimeOut({ message: 'wrong username or password', type: 'error' }, 3))
+      dispatch(notifyWithTimeOut('wrong username or password', 'error'))
     }
   }
 }
@@ -43,7 +43,7 @@ export const logUserOut = () => {
     console.log('logging out')
     dispatch(removeUser())
     userService.clearUser()
-    dispatch(notifyWithTimeOut({message: 'Logged out', type: 'info'}, 3))
+    dispatch(notifyWithTimeOut('Logged out'))
   }
 }
 

@@ -13,13 +13,16 @@ const notificationSlice = createSlice({
   }
 })
 
-export const notifyWithTimeOut = (notification, milliSeconds) => {
+export const notifyWithTimeOut = (message, type='info', milliSeconds=3) => {
   console.log('running notifyWithTimeOut in reducer')
-  console.log('notification given', notification)
+  console.log('notification given', message)
+  console.log('notification type', type)
+  const notification = { message: message, type: type }
   return async dispatch => {
     dispatch(addNotification(notification))
     setTimeout(() => {
       dispatch(removeNotification())
+      console.log('timeout over')
     }, milliSeconds * 1000)
   }
 }

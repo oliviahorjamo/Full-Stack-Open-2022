@@ -22,6 +22,11 @@ const blogSlice = createSlice({
       const deletedBlogId = action.payload.id
       console.log('id in deleteBlog action', deletedBlogId)
       return state.filter(b => b.id !== deletedBlogId)
+    },
+    sortBlogs(state, action) {
+      return state.sort(
+        (b1, b2) => b2.likes - b1.likes
+      )
     }
   }
 })
@@ -40,6 +45,7 @@ export const createNewBlog = (blog) => {
   return async dispatch => {
     const createdBlog = await blogService.create(blog)
     dispatch(appendBlog(createdBlog))
+    dispatch(sortBlogs())
   }
 }
 
@@ -51,6 +57,7 @@ export const updateBlog = blog => {
     const updatedBlog = await blogService.update(blogToUpdate)
     console.log('updatedBlog', updatedBlog)
     dispatch(likeBlog(updatedBlog))
+    dispatch(sortBlogs())
   }
 }
 
@@ -60,9 +67,8 @@ export const removeBlog = blog => {
     await blogService.remove(blog.id)
     console.log('blog deleted')
     dispatch(deleteBlog(blog))
-    dispatch(notifyWithTimeOut({message: `The blog' ${blog.title}' by '${blog.author} removed`, type:'info'}, 3))
   }
 }
 
-export const { setBlogs, appendBlog, likeBlog, deleteBlog } = blogSlice.actions
+export const { setBlogs, appendBlog, likeBlog, deleteBlog, sortBlogs } = blogSlice.actions
 export default blogSlice.reducer

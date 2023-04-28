@@ -1,15 +1,13 @@
-import { useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import Blog from './components/Blog'
+import { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 
-import LoginForm from './components/Login'
-import NewBlog from './components/NewBlog'
-import Notification from './components/Notification'
-import Togglable from './components/Togglable'
+import MainPage from './components/MainPage'
+import UserPage from './components/UserPage'
+import Footer from './components/Footer'
 
-import { notifyWithTimeOut } from './reducers/notificationReducer'
-import { initializeBlogs, createNewBlog, updateBlog, removeBlog } from './reducers/blogReducer'
-import { logUserIn, logUserOut, setUserToStore } from './reducers/userReducer'
+import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/usersReducer'
+import { setUserToStore } from './reducers/userReducer'
 
 // OPEN QUESTIONS
 // Currently the notifications are always set in App
@@ -21,14 +19,12 @@ import { logUserIn, logUserOut, setUserToStore } from './reducers/userReducer'
 // The question is: Where should the notification be dispatched?
 // (In like function dispatched in app, in remove dispatched in blogReducer)
 
+// TODO: Make information about the logged in user to appear as a footer on all pages
+
+import { Routes, Route, Link } from 'react-router-dom'
+
 const App = () => {
   const dispatch = useDispatch()
-
-  const blogs = useSelector(state => state.blogs)
-  const user = useSelector(state => state.user)
-
-  const blogFormRef = useRef()
-
 
   useEffect(() => {
     dispatch(setUserToStore())
@@ -36,75 +32,26 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
-  const notifyWith = (message, type='info') => {
-    dispatch(notifyWithTimeOut({message: message, type:type}, 3))
-  }
-
-  const login = async (username, password) => {
-    dispatch(logUserIn({ username, password }))
-  }
-
-  const logout = async () => {
-    dispatch(logUserOut())
-  }
-
-  const createBlogAndNotify = async (newBlog) => {
-    try {
-      dispatch(createNewBlog(newBlog))
-      notifyWith(`A new blog '${newBlog.title}' by '${newBlog.author}' added`)
-      blogFormRef.current.toggleVisibility()
-    } catch (e) {
-      notifyWith(('Error in creating blog'))
-    }
-  }
-
-  const like = async (blog) => {
-    dispatch(updateBlog(blog))
-    notifyWith(`A like for the blog '${blog.title}' by '${blog.author}'`)
-  }
-
-  const remove = async (blog) => {
-    const ok = window.confirm(`Sure you want to remove '${blog.title}' by ${blog.author}`)
-    if (ok) {
-      dispatch(removeBlog(blog))
-    }
-
-  }
-
-  if (!user) {
-    return (
-      <div>
-        <h2>log in to application</h2>
-        <Notification />
-        <LoginForm login={login} />
-      </div>
-    )
+  const padding = {
+    padding: 5
   }
 
   return (
     <div>
-      <h2>blogs</h2>
-      <Notification />
+      <Footer />
       <div>
-        {user.name} logged in
-        <button onClick={logout}>logout</button>
+        <Link style={padding} to='/'>mainpage</Link>
+        <Link style={padding} to='/users'>users</Link>
       </div>
-      <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <NewBlog createBlog={createBlogAndNotify} />
-      </Togglable>
-      <div>
-        {blogs.map(blog =>
-          <Blog
-            key={blog.id}
-            blog={blog}
-            like={() => like(blog)}
-            canRemove={user && blog.user.username===user.username}
-            remove={() => remove(blog)}
-          />
-        )}
-      </div>
+
+      <Routes>
+        <Route path='/' element={<MainPage />}></Route>
+        <Route path='/users' element={<UserPage />}></Route>
+      </Routes>
+      
     </div>
   )
 }
