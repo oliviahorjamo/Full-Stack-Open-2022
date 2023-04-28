@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
-import blogService from './services/blogs'
 import loginService from './services/login'
 import storageService from './services/storage'
 
@@ -11,22 +10,18 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 import { notifyWithTimeOut } from './reducers/notificationReducer'
-import { initializeBlogs, createNewBlog } from './reducers/blogReducer'
+import { initializeBlogs, createNewBlog, updateBlog, removeBlog } from './reducers/blogReducer'
 
-// TODO: Store the information about blog bosts in a redux store
-// After this the blog posts will not be stored in the state
-// Allows creating a BlogList component that finds and renders all the blogs
-// Setting blogs will be done in the blog reducer so that App doesn't have to worry
-// about calling blogService
-// Same when adding blogs: no need to call blogService from App
+// OPEN QUESTIONS
+// Currently the notifications are always set in App
+// Due to the asynchronous nature of notification setting, the notification is given slightly
+// after the list of blogs is already modified which looks a little clumsy
+// If notification setting is moved to reducers, this issue disappears.
+// However, this breaks the single responsibility idea a bit and, in addition, the blogReducer
+// has to know about the expected message form of notification reducer.
+// The question is: Where should the notification be dispatched?
+// (In like function dispatched in app, in remove dispatched in blogReducer)
 
-// STEPS
-// Currently the blog to dispatch is correct in reducer
-// However, backend keeps giving the error message that jwt has expired
-// The issue seems to come from the backend and not the frontend since there nothing actually changed in the post request
-// Note that liking and deleting is not going to work after this since there will no longer be setBlogs
-// function available
-// However, everything else should work normally as the blogs -list is still a parameter in App
 
 const App = () => {
   const dispatch = useDispatch()
@@ -80,18 +75,14 @@ const App = () => {
   }
 
   const like = async (blog) => {
-    const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id }
-    const updatedBlog = await blogService.update(blogToUpdate)
+    dispatch(updateBlog(blog))
     notifyWith(`A like for the blog '${blog.title}' by '${blog.author}'`)
-    //setBlogs(blogs.map(b => b.id === blog.id ? updatedBlog : b))
   }
 
   const remove = async (blog) => {
     const ok = window.confirm(`Sure you want to remove '${blog.title}' by ${blog.author}`)
     if (ok) {
-      await blogService.remove(blog.id)
-      notifyWith(`The blog' ${blog.title}' by '${blog.author} removed`)
-      //setBlogs(blogs.filter(b => b.id !== blog.id))
+      dispatch(removeBlog(blog))
     }
 
   }
@@ -114,7 +105,7 @@ const App = () => {
         {user.name} logged in
         <button onClick={logout}>logout</button>
       </div>
-      <Togglable buttonLabel='new note' ref={blogFormRef}>
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <NewBlog createBlog={createBlogAndNotify} />
       </Togglable>
       <div>
