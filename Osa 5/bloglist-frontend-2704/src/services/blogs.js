@@ -1,9 +1,9 @@
 import axios from 'axios'
-import storageService from '../services/storage'
+import userService from '../services/user'
 const baseUrl = '/api/blogs'
 
 const headers = {
-  'Authorization': storageService.loadUser() ? `Bearer ${storageService.loadUser().token}` : null
+  'Authorization': userService.getUser() ? `Bearer ${userService.getUser().token}` : null
 }
 
 const getAll = async () => {
@@ -22,6 +22,8 @@ const update = async (object) => {
 }
 
 const remove = async (id) => {
+  console.log('in blog service removing')
+  console.log('headers', headers)
   await axios.delete(`${baseUrl}/${id}`, { headers })
 }
 

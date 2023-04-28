@@ -1,8 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Blog from './components/Blog'
-import loginService from './services/login'
-import storageService from './services/storage'
 
 import LoginForm from './components/Login'
 import NewBlog from './components/NewBlog'
@@ -11,6 +9,7 @@ import Togglable from './components/Togglable'
 
 import { notifyWithTimeOut } from './reducers/notificationReducer'
 import { initializeBlogs, createNewBlog, updateBlog, removeBlog } from './reducers/blogReducer'
+import { logUserIn, logUserOut, setUserToStore } from './reducers/userReducer'
 
 // OPEN QUESTIONS
 // Currently the notifications are always set in App
@@ -22,22 +21,18 @@ import { initializeBlogs, createNewBlog, updateBlog, removeBlog } from './reduce
 // The question is: Where should the notification be dispatched?
 // (In like function dispatched in app, in remove dispatched in blogReducer)
 
-
 const App = () => {
   const dispatch = useDispatch()
 
   const blogs = useSelector(state => state.blogs)
-  console.log('blogs found in useSelector', blogs)
-
-  //const [blogs, setBlogs] = useState([])
-  const [user, setUser] = useState('')
+  const user = useSelector(state => state.user)
 
   const blogFormRef = useRef()
 
+
   useEffect(() => {
-    const user = storageService.loadUser()
-    setUser(user)
-  }, [])
+    dispatch(setUserToStore())
+  }, [dispatch])
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -48,20 +43,11 @@ const App = () => {
   }
 
   const login = async (username, password) => {
-    try {
-      const user = await loginService.login({ username, password })
-      setUser(user)
-      storageService.saveUser(user)
-      notifyWith('welcome!')
-    } catch(e) {
-      notifyWith('wrong username or password', 'error')
-    }
+    dispatch(logUserIn({ username, password }))
   }
 
   const logout = async () => {
-    setUser(null)
-    storageService.removeUser()
-    notifyWith('logged out')
+    dispatch(logUserOut())
   }
 
   const createBlogAndNotify = async (newBlog) => {

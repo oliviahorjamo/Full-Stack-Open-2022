@@ -3,10 +3,12 @@ let token = null
 const STORAGE_KEY = 'loggedBlogAppUser'
 
 const setUser = (user) => {
+  console.log('user to set to storage', user)
   window.localStorage.setItem(
     STORAGE_KEY, JSON.stringify(user)
   )
   token = user.token
+  console.log('user set to storage')
 }
 
 const getUser = () => {
