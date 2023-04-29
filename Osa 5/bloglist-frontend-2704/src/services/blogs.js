@@ -27,4 +27,5 @@ const remove = async (id) => {
   await axios.delete(`${baseUrl}/${id}`, { headers })
 }
 
+
 export default { getAll, create, update, remove }

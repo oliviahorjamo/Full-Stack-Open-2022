@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux"
 
+import { Link } from "react-router-dom"
+
 const UserPage = () => {
   const users = useSelector(state => state.users)
   console.log('users in user page component', users)
@@ -17,7 +19,9 @@ const UserPage = () => {
         <tbody>
           {users.map((user) => (
           <tr key={user.username}>
-            <td>{user.username}</td>
+            <td>
+              <Link to={`/users/${user.id}`}>{user.name}</Link>
+            </td>
             <td>{user.blogs.length}</td>
           </tr>
         ))}

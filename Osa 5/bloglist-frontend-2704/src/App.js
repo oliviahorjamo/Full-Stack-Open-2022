@@ -2,8 +2,10 @@ import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import MainPage from './components/MainPage'
-import UserPage from './components/UserPage'
+import UserPage from './components/UserList'
 import Footer from './components/Footer'
+import User from './components/User'
+import Blog from './components/Blog'
 
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
@@ -19,7 +21,6 @@ import { setUserToStore } from './reducers/userReducer'
 // The question is: Where should the notification be dispatched?
 // (In like function dispatched in app, in remove dispatched in blogReducer)
 
-// TODO: Make information about the logged in user to appear as a footer on all pages
 
 import { Routes, Route, Link } from 'react-router-dom'
 
@@ -41,17 +42,17 @@ const App = () => {
 
   return (
     <div>
-      <Footer />
       <div>
         <Link style={padding} to='/'>mainpage</Link>
         <Link style={padding} to='/users'>users</Link>
       </div>
-
+      <Footer />
       <Routes>
         <Route path='/' element={<MainPage />}></Route>
         <Route path='/users' element={<UserPage />}></Route>
+        <Route path='/users/:id' element={<User />}></Route>
+        <Route path='/blogs/:id' element={<Blog />}></Route>
       </Routes>
-      
     </div>
   )
 }
