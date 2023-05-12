@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjYzYzk0ZWFlMWI1NzQwNDdjYThlMjFiMyIsImlhdCI6MTY3NDEzNzI2MywiZXhwIjoxNjc0MTQwODYzfQ.K-tMmS9xN6Dld_RJRDdwDN1iZHWrvTSsbE_ccY4st6s
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9saXZpYWhvcmoiLCJpZCI6IjYzYzI3YmNhOGVjYTNhMzI3ZGJiYmFmYyIsImlhdCI6MTY3MzY5MTk2Mn0.3_2DzbZt8OzqWmcQlRudJnKqncn3JbP8D3njG09x6BY
 
 {
   "title": "Benefits of Scrumban",
@@ -37,4 +37,30 @@ Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9sa
 
 ###
 get http://localhost:3001/api/blogs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9saXZpYWhvcmoiLCJpZCI6IjYzYzI3YmNhOGVjYTNhMzI3ZGJiYmFmYyIsImlhdCI6MTY3MzY5MTk2Mn0.3_2DzbZt8OzqWmcQlRudJnKqncn3JbP8D3njG09x6BY
+
+###
+post http://localhost:3001/api/blogs/644d45f83747b21a7b8e335f/comments
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9saXZpYWhvcmoiLCJpZCI6IjYzYzI3YmNhOGVjYTNhMzI3ZGJiYmFmYyIsImlhdCI6MTY3MzY5MTk2Mn0.3_2DzbZt8OzqWmcQlRudJnKqncn3JbP8D3njG09x6BY
+
+{
+  "comment": "testi kommentti 2"
+}
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9saXZpYWhvcmoiLCJpZCI6IjYzYzI3YmNhOGVjYTNhMzI3ZGJiYmFmYyIsImlhdCI6MTY3MzY5MTk2Mn0.3_2DzbZt8OzqWmcQlRudJnKqncn3JbP8D3njG09x6BY
+
+{
+  "title": "test1",
+  "author": "Kalle Ilves",
+  "url": "www.google.com",
+  "likes": 7
+
+}
+
+###
+delete http://localhost:3001/api/blogs/63c27bca8eca3a327dbbba
 Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9saXZpYWhvcmoiLCJpZCI6IjYzYzI3YmNhOGVjYTNhMzI3ZGJiYmFmYyIsImlhdCI6MTY3MzY5MTk2Mn0.3_2DzbZt8OzqWmcQlRudJnKqncn3JbP8D3njG09x6BY

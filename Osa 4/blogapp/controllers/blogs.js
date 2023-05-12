@@ -1,61 +1,108 @@
-const jwt = require('jsonwebtoken')
-const blogRouter = require('express').Router()
+const jwt = require("jsonwebtoken");
+const blogRouter = require("express").Router();
 
-const Blog = require('../models/blog')
+const Blog = require("../models/blog");
+const Comment = require("../models/comment");
 
-blogRouter.get('/', async(request, response) => {
-  const blogs = await Blog
-    .find({})
-    .populate('user', { username: 1, name: 1 })
-  response.status(200).json(blogs)
-})
+const { userExtractor } = require("../utils/middleware");
 
-blogRouter.post('/', async(request, response) => {
-  if (!request.user) {
-    return response.status(401).json({ error: 'token missing or invalid' })
+blogRouter.get("/", async (request, response) => {
+  const blogs = await Blog.find({})
+    .populate("user", { username: 1, name: 1 })
+    .populate("comments", { comment: 1 });
+  response.status(200).json(blogs);
+});
+
+blogRouter.post("/", userExtractor, async (request, response) => {
+  const { title, author, url, likes } = request.body;
+  const blog = new Blog({
+    title,
+    author,
+    url,
+    likes: likes ? likes : 0,
+  });
+
+  const user = request.user;
+
+  if (!user) {
+    return response.status(401).json({ error: "operation not permitted" });
   }
 
-  const user = request.user
-  const blog = new Blog({ ...request.body, user: user.id })
+  blog.user = user._id;
 
-  const savedBlog = await blog.save()
+  let createdBlog = await blog.save();
 
-  user.blogs = user.blogs.concat(savedBlog._id)
-  await user.save()
+  user.blogs = user.blogs.concat(createdBlog._id);
+  await user.save();
 
-  response.status(201).json(savedBlog)
-})
+  createdBlog = await Blog.findById(createdBlog._id)
+    .populate("user")
+    .populate("comments");
 
-blogRouter.delete('/:id', async(request, response) => {
-  
-  const blogToDelete = await Blog.findById(request.params.id)
-  if (!blogToDelete ) {
-    return response.status(204).end()
+  response.status(201).json(createdBlog);
+});
+
+blogRouter.delete("/:id", userExtractor, async (request, response) => {
+  const blogToDelete = await Blog.findById(request.params.id);
+  if (!blogToDelete) {
+    return response.status(204).end();
   }
 
-  if ( blogToDelete.user && blogToDelete.user.toString() !== request.user.id ) {
+  if (blogToDelete.user && blogToDelete.user.toString() !== request.user.id) {
     return response.status(401).json({
-      error: 'only the creator can delete a blog'
-    })
+      error: "only the creator can delete a blog",
+    });
   }
 
-  await Blog.findByIdAndRemove(request.params.id)
+  const filterForIdToRemove = { id: request.params.id };
 
-  response.status(204).end()
+  await Blog.findOneAndDelete(filterForIdToRemove);
 
-})
+  response.status(204).end();
+});
 
-blogRouter.put('/:id', async(request, response) => {
-  const blog = request.body
+blogRouter.put("/:id", async (request, response) => {
+  const blog = request.body;
 
-  const updatedBlog = await Blog
-    .findByIdAndUpdate(
-      request.params.id,
-      blog,
-      { new: true, runValidators: true, context: 'query' }
-      )
-  
-  response.status(200).json(updatedBlog)
-})
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
+    new: true,
+    runValidators: true,
+    context: "query",
+  })
+    .populate("user", { username: 1, name: 1 })
+    .populate("comments", { comment: 1 });
 
-module.exports = blogRouter
+  response.status(200).json(updatedBlog);
+});
+
+blogRouter.post("/:id/comments", userExtractor, async (request, response) => {
+  console.log("request body", request.body);
+
+  const commentText = request.body.comment;
+  const blogId = request.params.id;
+  console.log("comment in blog route", commentText);
+  console.log("blogId", blogId);
+
+  const user = request.user;
+  console.log(user);
+
+  if (!user) {
+    return response.status(401).json({ error: "operation not permitted" });
+  }
+
+  const comment = new Comment({
+    comment: commentText,
+    blog: blogId,
+  });
+
+  let createdComment = await comment.save();
+
+  blogCommented = await Blog.findById(blogId);
+  blogCommented.comments = blogCommented.comments.concat(createdComment._id);
+
+  await blogCommented.save();
+
+  response.status(200).json(createdComment);
+});
+
+module.exports = blogRouter;

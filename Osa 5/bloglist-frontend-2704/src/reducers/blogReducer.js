@@ -12,11 +12,11 @@ const blogSlice = createSlice({
     appendBlog(state, action) {
       state.push(action.payload)
     },
-    likeBlog(state, action) {
-      const likedBlog = action.payload
-      const id = likedBlog.id
+    updateBlog(state, action) {
+      const updatedBlog = action.payload
+      const id = updatedBlog.id
       return state.map(b =>
-        b.id !== id ? b : likedBlog)
+        b.id !== id ? b : updatedBlog)
     },
     deleteBlog(state, action) {
       const deletedBlogId = action.payload.id
@@ -49,26 +49,33 @@ export const createNewBlog = (blog) => {
   }
 }
 
-export const updateBlog = blog => {
+export const likeBlog = (blog) => {
   return async dispatch => {
     console.log('blog user id', blog.user.id)
-    const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id }
+    const commentIds = blog.comments.map(b => b.id)
+    const blogToUpdate = { ...blog, likes: blog.likes + 1, user: blog.user.id, comments: commentIds }
     console.log('blog to update', blogToUpdate)
     const updatedBlog = await blogService.update(blogToUpdate)
     console.log('updatedBlog', updatedBlog)
-    dispatch(likeBlog(updatedBlog))
+    dispatch(updateBlog(updatedBlog))
     dispatch(sortBlogs())
   }
 }
 
-export const removeBlog = blog => {
+export const removeBlog = (blog) => {
   return async dispatch => {
-    console.log('deleting blog', blog)
     await blogService.remove(blog.id)
-    console.log('blog deleted')
     dispatch(deleteBlog(blog))
   }
 }
 
-export const { setBlogs, appendBlog, likeBlog, deleteBlog, sortBlogs } = blogSlice.actions
+export const commentBlog = (blog, comment) => {
+  return async dispatch => {
+    const createdComment = await blogService.createComment(blog.id, {comment: comment})
+    const commentedBlog = {...blog, comments: [...blog.comments, createdComment]}
+    dispatch(updateBlog(commentedBlog))
+  }
+}
+
+export const { setBlogs, appendBlog, updateBlog, deleteBlog, sortBlogs } = blogSlice.actions
 export default blogSlice.reducer

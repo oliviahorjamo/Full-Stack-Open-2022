@@ -22,10 +22,12 @@ const update = async (object) => {
 }
 
 const remove = async (id) => {
-  console.log('in blog service removing')
-  console.log('headers', headers)
   await axios.delete(`${baseUrl}/${id}`, { headers })
 }
 
+const createComment = async (blogId, object) => {
+  const request = await axios.post(`${baseUrl}/${blogId}/comments/`, object, { headers })
+  return request.data
+}
 
-export default { getAll, create, update, remove }
+export default { getAll, create, update, remove, createComment }

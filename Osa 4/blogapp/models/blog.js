@@ -1,29 +1,45 @@
 // define the schema for an email
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
+const User = require("./user");
 
 const blogSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
   },
   author: String,
   url: {
     type: String,
-    required: true
+    required: true,
   },
   likes: Number,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }
-})
+    ref: "User",
+  },
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
+});
 
-blogSchema.set('toJSON', {
+blogSchema.set("toJSON", {
   transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id.toString()
-    delete returnedObject._id
-    delete returnedObject.__v
-  }
-})
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
 
-module.exports = mongoose.model('Blog', blogSchema)
+blogSchema.pre("findOneAndDelete", async function (next) {
+  console.log("user blog deletion middleware ran");
+  console.log("this", this);
+  const blogId = this._conditions.id;
+  console.log("blogId", blogId);
+  User.updateMany({}, { $pull: { blogs: { id: blogId } } });
+  console.log("users updated");
+});
+
+module.exports = mongoose.model("Blog", blogSchema);

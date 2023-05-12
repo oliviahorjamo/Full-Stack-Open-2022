@@ -1,10 +1,6 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { notifyWithTimeOut } from '../reducers/notificationReducer'
-//import { createNewBlog } from '../reducers/blogReducer'
 
 const BlogForm = ({createBlog}) => {
-  //const dispatch = useDispatch()
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')

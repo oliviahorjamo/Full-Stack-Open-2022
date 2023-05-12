@@ -6,16 +6,19 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
     "start": "cross-env NODE_ENV=production node index.js",
-    "dev": "cross-env NODE_ENV=development nodemon index.js"
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "prettier": "npx prettier --write ."
   },
   "author": "Olivia Horjamo",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^8.31.0",
     "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.26.0",
     "jest": "^29.3.1",
-    "nodemon": "^2.0.20",
+    "nodemon": "^2.0.22",
+    "prettier": "2.8.7",
     "supertest": "^6.3.3"
   },
   "dependencies": {
