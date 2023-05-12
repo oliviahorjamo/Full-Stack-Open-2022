@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { commentBlog } from "../reducers/blogReducer";
 import { notifyWithTimeOut } from "../reducers/notificationReducer";
 import { useParams } from "react-router-dom";
+import { Form, Button } from 'react-bootstrap'
 
 const NewComment = () => {
   const dispatch = useDispatch()
@@ -10,13 +11,13 @@ const NewComment = () => {
   const id = useParams().id
   const blog = blogs.find(b => b.id === id)
   
-  const [comment, setComment] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    const comment = event.target.comment.value
+    event.target.comment.value = ''
     dispatch(commentBlog(blog, comment))
     dispatch(notifyWithTimeOut(`added comment ${comment} for blog ${blog.title}`))
-    setComment('')
   }
 
   return (
@@ -24,18 +25,15 @@ const NewComment = () => {
       <h4>
         comment blog
       </h4>
-      <form onSubmit={handleSubmit}>
-        <div>
-          comment
-          <input
-          id = 'comment'
-          placeholder = 'comment'
-          value = {comment}
-          onChange={({ target }) => setComment(target.value)}
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Control
+            type='text'
+            name='comment'
           />
-        </div>
-        <button type='submit'>send comment</button>
-      </form>
+        </Form.Group>
+        <Button type='submit'>send comment</Button>
+      </Form>
     </div>
   )
 }

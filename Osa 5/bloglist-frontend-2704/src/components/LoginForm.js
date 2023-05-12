@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { logUserIn } from '../reducers/userReducer'
+import { Form, Button } from 'react-bootstrap'
 
 const LoginForm = () => {
   const dispatch = useDispatch()
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    const username = event.target.username.value
+    const password = event.target.password.value
+    console.log('username', username)
+    console.log('password', password)
     await login(username, password)
   }
 
@@ -17,28 +20,26 @@ const LoginForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        username
-        <input
-          id='username'
-          value={username}
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          id='password'
-          type="password"
-          value={password}
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button id='login-button' type="submit">
-        login
-      </button>
-    </form>
+    <div>
+      <h2>login</h2>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>username:</Form.Label>
+          <Form.Control
+            type="text"
+            name="username"
+          />
+          <Form.Label>password:</Form.Label>
+          <Form.Control
+            type="password"
+            name='password'
+          />
+          <Button variant="primary" type="submit">
+            login
+          </Button>
+        </Form.Group>
+      </Form>
+    </div>
   )
 }
 

@@ -49,7 +49,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
       <div>
         <Link style={padding} to='/'>mainpage</Link>
         <Link style={padding} to='/users'>users</Link>
@@ -61,6 +61,8 @@ const App = () => {
         <Route path='/users/:id' element={<User />}></Route>
         <Route path='/blogs/:id' element={<Blog />}></Route>
       </Routes>
+
+      
     </div>
   )
 }

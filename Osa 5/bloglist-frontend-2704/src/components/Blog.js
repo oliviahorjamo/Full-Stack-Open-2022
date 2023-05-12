@@ -4,6 +4,8 @@ import { notifyWithTimeOut } from "../reducers/notificationReducer"
 import { likeBlog, removeBlog } from "../reducers/blogReducer"
 import CommentForm from './NewComment'
 
+import { Table, Button } from 'react-bootstrap'
+
 const Blog = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
@@ -38,13 +40,13 @@ const Blog = () => {
   
   return (
     <div>
-      <h1>{blog.title} {blog.author}</h1>
+      <h1>{blog.title} by {blog.author}</h1>
       <a href={blog.url}>{blog.url}</a>
-      <p>{blog.likes} likes</p>
-      <button onClick={() => like(blog)}>like</button>
       <p>Added by {blog.user.name}</p>
+      <p>{blog.likes} likes</p>
+      <Button onClick={() => like(blog)}>like</Button>
       <CommentList comments={blog.comments}/>
-      {canRemove&&<button onClick={() => remove(blog)}>delete</button>}
+      {canRemove&&<Button onClick={() => remove(blog)}>delete</Button>}
       <CommentForm blog={blog}/>
     </div>
   )
@@ -59,12 +61,19 @@ const CommentList = (props) => {
     return (
       <div>
         <h2>Comments</h2>
-      <ul>
-        {comments.map(c => (
-          <li key={c.id}>
-            {c.comment}
-          </li>
+        <Table striped>
+          <tbody>
+            {comments.map(c => (
+            <tr key={c.id}>
+              <td>
+              {c.comment}
+              </td>
+            </tr>
         ))}
+
+          </tbody>
+        </Table>
+      <ul>
       </ul>
       </div>
     )
