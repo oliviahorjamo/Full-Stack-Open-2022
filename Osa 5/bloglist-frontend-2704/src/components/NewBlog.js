@@ -1,54 +1,44 @@
 import { useState } from 'react'
 
-const BlogForm = ({createBlog}) => {
+import { Form, Button } from 'react-bootstrap'
 
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+const BlogForm = ({createBlog}) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    console.log('event', event)
+    const title = event.target.title.value
+    const author = event.target.author.value
+    const url = event.target.url.value
     await createBlog({ title, author, url })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
   }
-
 
   return (
     <div>
       <h4>Create a new blog</h4>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          title
-          <input
-            id='title'
-            placeholder='title'
-            value={title}
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          author
-          <input
-            id='author'
-            placeholder='author'
-            value={author}
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          url
-          <input
-            id='url'
-            placeholder='url'
-            value={url}
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-        <button type="submit">create</button>
-      </form>
+      <Form onSubmit={handleSubmit}>
+      <Form.Group>
+        <Form.Label>title</Form.Label>
+        <Form.Control
+          type='text'
+          name='title'
+        />
+        <Form.Label>author</Form.Label>
+        <Form.Control
+          type='text'
+          name='author'
+        />
+        <Form.Label>url</Form.Label>
+        <Form.Control
+          type='text'
+          name='url'
+        />
+        <Button variant='primary' type='submit'>
+          create
+        </Button>
+      </Form.Group>
+      </Form>
     </div>
   )
 }
