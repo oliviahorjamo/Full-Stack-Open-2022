@@ -1,15 +1,11 @@
-export interface CourseInfo {
-  key?: string,
-  name: string,
-  exerciseCount: number
-}
+import Part from "./Part"
+import { CoursePart } from "../types"
 
-const Content = ({ courseInfo }: { courseInfo: CourseInfo }): JSX.Element => {
-  const {name, exerciseCount} = courseInfo
+const Content = ({ courseInfo }: { courseInfo: CoursePart }): JSX.Element => {
   return (
-    <p>
-        {name} {exerciseCount}
-      </p>
+    <div>
+    <Part coursePart={courseInfo}/>
+    </div>
   )
 }
 
