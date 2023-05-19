@@ -8,7 +8,6 @@ interface FlightDiaryProps {
 }
 
 const FlightDiary = ({entry}: FlightDiaryProps): JSX.Element => {
-  console.log(entry);
   return (
     <div>
       <h3>{entry.date}</h3>
