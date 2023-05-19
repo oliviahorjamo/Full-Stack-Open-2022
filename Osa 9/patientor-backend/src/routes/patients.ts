@@ -20,27 +20,15 @@ patientRouter.post('/', (req, res) => {
     }
     res.status(400).send(errorMessage);
   }
+});
 
+patientRouter.get('/:id', (req, res) => {
+  const id = req.params.id;
+  console.log('id given:', id);
+  const patient = patientService.getById(id);
+  res.status(200).send(patient);
+  
 });
 
 
 export default patientRouter;
-
-// Create a POST endpoint for /api/patients which allows adding a new patient
-// calls the util method for changing the type of the object to a new entry
-// calls the service method for adding a new diary
-
-// util method for creating a new entry
-// takes an object as input
-// assures that the object exists
-// parses all fields
-// a parser for each field that tests that the object is of expected type
-// change the interfaces to types for values that have specific strings that they must contain
-// makes a newEntry type
-
-// you also need a newEntry type that doesn't have the field id, done
-
-// service method for adding a new entry
-// make a new diaryentry from the object and create field id
-// add patient to the list of patients
-// return the new entry
