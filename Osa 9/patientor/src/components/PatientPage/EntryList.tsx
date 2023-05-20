@@ -1,5 +1,7 @@
 
-import { Entry } from "../../types";
+import { useEffect, useState } from "react";
+import { DiagnoseEntry, Entry } from "../../types";
+import diagnoseService from '../../services/diagnoses'
 
 interface EntryListProps {
   entries: Entry[]
@@ -29,15 +31,29 @@ const EntryList = ({entries}: EntryListProps): JSX.Element => {
 }
 
 const EntryInfo = ({entry}: EntryProps): JSX.Element => {
+  const [diagnoses, setDiagnoses] = useState<DiagnoseEntry[]>([])
+
+  useEffect(() => {
+    const fetchDiagnoseList = async () => {
+      const allDiagnoses = await diagnoseService.getAll();
+      const entryDiagnoses = allDiagnoses.filter(d =>
+        entry.diagnosisCodes?.includes(d.code))
+      setDiagnoses(entryDiagnoses);
+    };
+    void fetchDiagnoseList();
+  }, []);
+
+  console.log('diagnoses fetched', diagnoses)
+
   return (
     <div>
       <p>{entry.date} <em>{entry.description}</em></p>
-      {entry.diagnosisCodes && entry.diagnosisCodes.length > 0 && (
+      {diagnoses && diagnoses.length > 0 && (
         <div>
           <p>Diagnose codes:</p>
           <ul>
-          {entry.diagnosisCodes?.map(d => 
-            <li key={d}>{d}</li>)}
+          {diagnoses.map(d => 
+            <li key={d.code}>{d.code} {d.name}</li>)}
           </ul>
         </div>
       )}

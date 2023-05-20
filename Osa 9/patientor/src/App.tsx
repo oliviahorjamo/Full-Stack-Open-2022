@@ -13,7 +13,6 @@ const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
 
   useEffect(() => {
-
     const fetchPatientList = async () => {
       const patients = await patientService.getAll();
       setPatients(patients);
@@ -48,11 +47,3 @@ const App = () => {
 
 export default App;
 
-
-// Extend a patient's page in the frontend to list the date, description and diagnoseCodes
-// of the patent's entries
-
-// TODO
-// 3. in patent component find entries
-// 4. Create a component for each entry
-// 5. in patient component map each entry to an entry component
