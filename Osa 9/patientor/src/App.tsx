@@ -7,7 +7,7 @@ import { Patient } from "./types";
 
 import patientService from "./services/patients";
 import PatientListPage from "./components/PatientListPage";
-import PatientPage from "./components/Patient";
+import PatientPage from "./components/PatientPage/Patient";
 
 const App = () => {
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -49,16 +49,10 @@ const App = () => {
 export default App;
 
 
-// App passes setPatients as a prop to PatientListPage (just like in the flight diaries my
-// App passed setDiaries to the Form component)
-
-// Find information regarding only one person
-// The user should be able to access a patient's information by clicking the patients name
+// Extend a patient's page in the frontend to list the date, description and diagnoseCodes
+// of the patent's entries
 
 // TODO
-
-// 2. create a new route for the patient, content = Patient component
-
-// 3. change every patient to appear as a link in the table
-
-// 
+// 3. in patent component find entries
+// 4. Create a component for each entry
+// 5. in patient component map each entry to an entry component

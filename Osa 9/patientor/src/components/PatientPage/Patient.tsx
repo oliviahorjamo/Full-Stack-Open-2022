@@ -1,5 +1,6 @@
-import { Patient } from "../types"
+import { Patient } from "../../types"
 import { Female, Male, Transgender } from "@mui/icons-material"
+import EntryList from "./EntryList"
 
 interface PatientProps {
   patient: Patient | null | undefined
@@ -30,6 +31,7 @@ const PatientPage = ({patient}: PatientProps) => {
       </div>
       <p>ssn: {patient.ssn}</p>
       <p>occupation: {patient.occupation}</p>
+      <EntryList entries={patient.entries}/>
     </div>
   )
 }
