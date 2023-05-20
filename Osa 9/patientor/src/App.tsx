@@ -47,3 +47,10 @@ const App = () => {
 
 export default App;
 
+// extend the entry listing on the patient's page to include the Entry's details with
+// a new component that shows the rest of the inforamtion fo the patient's entries
+// distinguishing types from each other
+
+// you could use e.g. Icons to get appropriate visuals for your listing
+
+// you should use a swtich case based rendering

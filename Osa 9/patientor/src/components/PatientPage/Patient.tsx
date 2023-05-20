@@ -1,6 +1,6 @@
 import { Patient } from "../../types"
 import { Female, Male, Transgender } from "@mui/icons-material"
-import EntryList from "./EntryList"
+import EntryList from "./diagnoseEntries/EntryList"
 
 interface PatientProps {
   patient: Patient | null | undefined
