@@ -122,3 +122,11 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+// build a CI/CD pipeline for this app to deploy the app to Fly
+// steps:
+// 1. create a remote repo
+// 2. clone the repo
+// 3. copy the phonebook from part 3 to the repo
+// 4. test that the app works
+// 5. start building the pipeline
