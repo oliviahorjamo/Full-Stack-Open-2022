@@ -1,0 +1,12 @@
+docker container ls
+cd ../todo-app/todo-backend
+docker compose -f docker-compose.dev.yml up
+docker container ls
+docker exec todo-mongodb-app
+mongosh -u root -p example
+show dbs
+use the_database
+show collections
+db.todos.find()
+db.todos.insertOne({text: 'Adding tools to my toolbelt', done: false})
+db.todos.find()
