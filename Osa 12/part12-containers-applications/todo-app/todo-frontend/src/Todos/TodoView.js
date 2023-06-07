@@ -44,3 +44,9 @@ const TodoView = () => {
 }
 
 export default TodoView
+
+// extract a component Todo that represents a single todo
+// Write a test for the new component
+// Run locally
+// add a test stage to the Dockerfile
+// before nginx alpine probably?
