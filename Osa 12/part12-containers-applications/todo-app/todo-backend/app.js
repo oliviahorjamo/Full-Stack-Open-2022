@@ -7,8 +7,6 @@ const todosRouter = require('./routes/todos');
 
 const app = express();
 
-const port = 3001
-
 app.use(cors());
 
 app.use(logger('dev'));

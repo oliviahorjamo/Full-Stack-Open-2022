@@ -19,6 +19,19 @@ services:
     command: ['redis-server', '--appendonly', 'yes']
     volumes:
       - ./redis_data/:/data
+  todo-backend:
+    image: todo-backend-dev
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - 3000:3000
+    environment:
+      - MONGO_URL=http://mongo:27017
+      - REDIS_URL=http://redis:6379
+    container_name: todo-backend-dev
 
 volumes:
   mongo_data:

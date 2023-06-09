@@ -7,5 +7,5 @@ services:
     volumes:
       - ./:/usr/src/app
     ports:
-    - 3000:3000 # why this no longer needs to be 8080:80 even though we are still using nginx?
+    - 3001:3000 # why this no longer needs to be 8080:80 even though we are still using nginx?
     container_name: todo-frontend-dev
