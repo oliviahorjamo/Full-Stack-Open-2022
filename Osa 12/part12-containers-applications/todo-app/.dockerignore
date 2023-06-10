@@ -1,0 +1,6 @@
+todo-frontend/node_modules
+todo-backend/.dockerignore
+todo-backend/Dockerfile
+todo-backend/.gitignore
+todo-backend/node_modules
+todo-backend/.env
