@@ -1,0 +1,53 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+  
+  
+jobs:
+  deployment_pipeline:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "18.12.1"
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: npm install backend
+        run: npm install
+      - name: lint backend
+        run: npm run lint
+      - name: test backend
+        env:
+          NODE_ENV: test
+          PORT: ${{secrets.PORT}}
+          DATABASE_URL: ${{secrets.TEST_DB}}
+        run: npm run test
+      - name: Deploy to Fly
+        if: ${{github.event_name == 'push'}}
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          NODE_ENV: production
+          PORT: ${{secrets.PORT}}
+          DATABASE_URL: ${{secrets.PROD_DB}}
+
+  tag_release:
+    if: ${{github.event_name == 'push'}}
+    needs: [deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+    - name: Bump version and push tag
+      uses: anothrNick/github-tag-action@1.64.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DEFAULT_BUMP: patch
+        
+      
+        

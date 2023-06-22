@@ -1,0 +1,15 @@
+/// Here all rest requests to user routes for testing the app
+post http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "username": "testuser9",
+  "password": "secret"
+}
+
+###
+get http://localhost:3001/api/users
+
+###
+get http://localhost:3001/api/users/dcb07b07-6307-4699-812f-147b4b51cb38

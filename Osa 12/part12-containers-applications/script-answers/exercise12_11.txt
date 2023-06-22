@@ -66,4 +66,146 @@ Script done on 2023-06-06 01:23:54+03:00 [COMMAND_EXIT_CODE="0"]
 [36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:23:22.637+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.26.0.1:52186","uuid":"3dd464fa-e010-45b8-bf7e-f6dd96d505d4","connectionId":14,"connectionCount":2}}
 [36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:23:22.641+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn14","msg":"client metadata","attr":{"remote":"172.26.0.1:52186","client":"conn14","doc":{"driver":{"name":"nodejs|Mongoose","version":"3.6.8"},"os":{"type":"Linux","name":"linux","architecture":"x64","version":"5.19.0-43-generic"},"platform":"'Node.js v18.12.1, LE (unified)","version":"3.6.8|5.13.2"}}}
 [36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:23:22.648+00:00"},"s":"I",  "c":"ACCESS",   "id":20250,   "ctx":"conn14","msg":"Authentication succeeded","attr":{"mechanism":"SCRAM-SHA-256","speculative":true,"principalName":"the_username","authenticationDatabase":"the_database","remote":"172.26.0.1:52186","extraInfo":{}}}
-[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:23:33.141+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listen
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:23:33.141+00:00"},"s":"I",  "c":"NETWORK",  "id":22943,   "ctx":"listener","msg":"Connection accepted","attr":{"remote":"172.26.0.1:55840","uuid":"324a2008-a1c5-4fd2-9746-5f8ab3b04aa9","connectionId":15,"connectionCount":3}}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:23:33.142+00:00"},"s":"I",  "c":"NETWORK",  "id":51800,   "ctx":"conn15","msg":"client metadata","attr":{"remote":"172.26.0.1:55840","client":"conn15","doc":{"driver":{"name":"nodejs|Mongoose","version":"3.6.8"},"os":{"type":"Linux","name":"linux","architecture":"x64","version":"5.19.0-43-generic"},"platform":"'Node.js v18.12.1, LE (unified)","version":"3.6.8|5.13.2"}}}
+[33mtodo-backend-redis-1  | [0m1:signal-handler (1686004038) Received SIGTERM scheduling shutdown...
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"CONTROL",  "id":23377,   "ctx":"SignalHandler","msg":"Received signal","attr":{"signal":15,"error":"Terminated"}}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"CONTROL",  "id":23378,   "ctx":"SignalHandler","msg":"Signal was sent by kill(2)","attr":{"pid":0,"uid":0}}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"CONTROL",  "id":23381,   "ctx":"SignalHandler","msg":"will terminate after current cmd ends"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"REPL",     "id":4784900, "ctx":"SignalHandler","msg":"Stepping down the ReplicationCoordinator for shutdown","attr":{"waitTimeMillis":15000}}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"REPL",     "id":4794602, "ctx":"SignalHandler","msg":"Attempting to enter quiesce mode"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"-",        "id":6371601, "ctx":"SignalHandler","msg":"Shutting down the FLE Crud thread pool"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"COMMAND",  "id":4784901, "ctx":"SignalHandler","msg":"Shutting down the MirrorMaestro"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"SHARDING", "id":4784902, "ctx":"SignalHandler","msg":"Shutting down the WaitForMajorityService"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"CONTROL",  "id":4784903, "ctx":"SignalHandler","msg":"Shutting down the LogicalSessionCache"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.275+00:00"},"s":"I",  "c":"NETWORK",  "id":20562,   "ctx":"SignalHandler","msg":"Shutdown: going to close listening sockets"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"NETWORK",  "id":23017,   "ctx":"listener","msg":"removing socket file","attr":{"path":"/tmp/mongodb-27017.sock"}}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"NETWORK",  "id":4784905, "ctx":"SignalHandler","msg":"Shutting down the global connection pool"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":4784906, "ctx":"SignalHandler","msg":"Shutting down the FlowControlTicketholder"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"-",        "id":20520,   "ctx":"SignalHandler","msg":"Stopping further Flow Control ticket acquisitions."}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":4784908, "ctx":"SignalHandler","msg":"Shutting down the PeriodicThreadToAbortExpiredTransactions"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"REPL",     "id":4784909, "ctx":"SignalHandler","msg":"Shutting down the ReplicationCoordinator"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"SHARDING", "id":4784910, "ctx":"SignalHandler","msg":"Shutting down the ShardingInitializationMongoD"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"REPL",     "id":4784911, "ctx":"SignalHandler","msg":"Enqueuing the ReplicationStateTransitionLock for shutdown"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"-",        "id":4784912, "ctx":"SignalHandler","msg":"Killing all operations for shutdown"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"-",        "id":4695300, "ctx":"SignalHandler","msg":"Interrupted all currently running operations","attr":{"opsKilled":4}}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"TENANT_M", "id":5093807, "ctx":"SignalHandler","msg":"Shutting down all TenantMigrationAccessBlockers on global shutdown"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"COMMAND",  "id":4784913, "ctx":"SignalHandler","msg":"Shutting down all open transactions"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"REPL",     "id":4784914, "ctx":"SignalHandler","msg":"Acquiring the ReplicationStateTransitionLock for shutdown"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"INDEX",    "id":4784915, "ctx":"SignalHandler","msg":"Shutting down the IndexBuildsCoordinator"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"NETWORK",  "id":4784918, "ctx":"SignalHandler","msg":"Shutting down the ReplicaSetMonitor"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"SHARDING", "id":4784921, "ctx":"SignalHandler","msg":"Shutting down the MigrationUtilExecutor"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"ASIO",     "id":22582,   "ctx":"MigrationUtil-TaskExecutor","msg":"Killing all outstanding egress activity."}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"COMMAND",  "id":4784923, "ctx":"SignalHandler","msg":"Shutting down the ServiceEntryPoint"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":4784925, "ctx":"SignalHandler","msg":"Shutting down free monitoring"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":20609,   "ctx":"SignalHandler","msg":"Shutting down free monitoring"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":4784927, "ctx":"SignalHandler","msg":"Shutting down the HealthLog"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":4784928, "ctx":"SignalHandler","msg":"Shutting down the TTL monitor"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"INDEX",    "id":3684100, "ctx":"SignalHandler","msg":"Shutting down TTL collection monitor thread"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"INDEX",    "id":3684101, "ctx":"SignalHandler","msg":"Finished shutting down TTL collection monitor thread"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":6278511, "ctx":"SignalHandler","msg":"Shutting down the Change Stream Expired Pre-images Remover"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":4784929, "ctx":"SignalHandler","msg":"Acquiring the global lock for shutdown"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"CONTROL",  "id":4784930, "ctx":"SignalHandler","msg":"Shutting down the storage engine"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"STORAGE",  "id":22320,   "ctx":"SignalHandler","msg":"Shutting down journal flusher thread"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"STORAGE",  "id":22321,   "ctx":"SignalHandler","msg":"Finished shutting down journal flusher thread"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.276+00:00"},"s":"I",  "c":"STORAGE",  "id":22322,   "ctx":"SignalHandler","msg":"Shutting down checkpoint thread"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.277+00:00"},"s":"I",  "c":"STORAGE",  "id":22323,   "ctx":"SignalHandler","msg":"Finished shutting down checkpoint thread"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.277+00:00"},"s":"I",  "c":"STORAGE",  "id":20282,   "ctx":"SignalHandler","msg":"Deregistering all the collections"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.277+00:00"},"s":"I",  "c":"STORAGE",  "id":22261,   "ctx":"SignalHandler","msg":"Timestamp monitor shutting down"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.277+00:00"},"s":"I",  "c":"STORAGE",  "id":22317,   "ctx":"SignalHandler","msg":"WiredTigerKVEngine shutting down"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.277+00:00"},"s":"I",  "c":"STORAGE",  "id":22318,   "ctx":"SignalHandler","msg":"Shutting down session sweeper thread"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.277+00:00"},"s":"I",  "c":"STORAGE",  "id":22319,   "ctx":"SignalHandler","msg":"Finished shutting down session sweeper thread"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.277+00:00"},"s":"I",  "c":"STORAGE",  "id":4795902, "ctx":"SignalHandler","msg":"Closing WiredTiger","attr":{"closeConfig":"leak_memory=true,"}}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.277+00:00"},"s":"I",  "c":"NETWORK",  "id":22944,   "ctx":"conn13","msg":"Connection ended","attr":{"remote":"172.26.0.1:52174","uuid":"399bffa7-6cb6-45cb-901e-fb3c1128f4bc","connectionId":13,"connectionCount":2}}
+[33mtodo-backend-redis-1  | [0m1:M 05 Jun 2023 22:27:18.280 # User requested shutdown...
+[33mtodo-backend-redis-1  | [0m1:M 05 Jun 2023 22:27:18.280 * Saving the final RDB snapshot before exiting.
+[33mtodo-backend-redis-1  | [0m1:M 05 Jun 2023 22:27:18.287 * DB saved on disk
+[33mtodo-backend-redis-1  | [0m1:M 05 Jun 2023 22:27:18.287 # Redis is now ready to exit, bye bye...
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.294+00:00"},"s":"I",  "c":"STORAGE",  "id":4795901, "ctx":"SignalHandler","msg":"WiredTiger closed","attr":{"durationMillis":17}}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.294+00:00"},"s":"I",  "c":"STORAGE",  "id":22279,   "ctx":"SignalHandler","msg":"shutdown: removing fs lock..."}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.294+00:00"},"s":"I",  "c":"-",        "id":4784931, "ctx":"SignalHandler","msg":"Dropping the scope cache for shutdown"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.294+00:00"},"s":"I",  "c":"FTDC",     "id":20626,   "ctx":"SignalHandler","msg":"Shutting down full-time diagnostic data capture"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.299+00:00"},"s":"I",  "c":"CONTROL",  "id":20565,   "ctx":"SignalHandler","msg":"Now exiting"}
+[36mtodo-backend-mongo-1  | [0m{"t":{"$date":"2023-06-05T22:27:18.299+00:00"},"s":"I",  "c":"CONTROL",  "id":23138,   "ctx":"SignalHandler","msg":"Shutting down","attr":{"exitCode":0}}
+[33mtodo-backend-redis-1 exited with code 0
+[0m[33mtodo-backend-redis-1 exited with code 0
+[0m[36mtodo-backend-mongo-1 exited with code 0
+[0m[?2004h(base) ]0;hdolivia@lx1-fuxi109: ~/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend[01;32mhdolivia@lx1-fuxi109[00m:[01;34m~/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend[00m$ npm run dev
+[?2004l
+> todo-express-backend@0.0.0 dev
+> nodemon ./bin/www
+
+[33m[nodemon] 2.0.12[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,json[39m
+[32m[nodemon] starting `node ./bin/www`[39m
+node:events:491
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: connect ECONNREFUSED 127.0.0.1:6379
+[90m    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1300:16)[39m
+Emitted 'error' event on RedisClient instance at:
+    at RedisClient.on_error [90m(/home/hdolivia/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend/[39mnode_modules/[4mredis[24m/index.js:342:14[90m)[39m
+    at Socket.<anonymous> [90m(/home/hdolivia/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend/[39mnode_modules/[4mredis[24m/index.js:223:14[90m)[39m
+[90m    at Socket.emit (node:events:513:28)[39m
+[90m    at emitErrorNT (node:internal/streams/destroy:151:8)[39m
+[90m    at emitErrorCloseNT (node:internal/streams/destroy:116:3)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)[39m {
+  errno: [33m-111[39m,
+  code: [32m'ECONNREFUSED'[39m,
+  syscall: [32m'connect'[39m,
+  address: [32m'127.0.0.1'[39m,
+  port: [33m6379[39m
+}
+
+Node.js v18.12.1
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+^C
+[?2004h(base) ]0;hdolivia@lx1-fuxi109: ~/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend[01;32mhdolivia@lx1-fuxi109[00m:[01;34m~/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend[00m$ npm run dev
+[?2004l
+> todo-express-backend@0.0.0 dev
+> nodemon ./bin/www
+
+[33m[nodemon] 2.0.12[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,json[39m
+[32m[nodemon] starting `node ./bin/www`[39m
+node:events:491
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: connect ECONNREFUSED 127.0.0.1:6379
+[90m    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1300:16)[39m
+Emitted 'error' event on RedisClient instance at:
+    at RedisClient.on_error [90m(/home/hdolivia/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend/[39mnode_modules/[4mredis[24m/index.js:342:14[90m)[39m
+    at Socket.<anonymous> [90m(/home/hdolivia/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend/[39mnode_modules/[4mredis[24m/index.js:223:14[90m)[39m
+[90m    at Socket.emit (node:events:513:28)[39m
+[90m    at emitErrorNT (node:internal/streams/destroy:151:8)[39m
+[90m    at emitErrorCloseNT (node:internal/streams/destroy:116:3)[39m
+[90m    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)[39m {
+  errno: [33m-111[39m,
+  code: [32m'ECONNREFUSED'[39m,
+  syscall: [32m'connect'[39m,
+  address: [32m'127.0.0.1'[39m,
+  port: [33m6379[39m
+}
+
+Node.js v18.12.1
+[31m[nodemon] app crashed - waiting for file changes before starting...[39m
+^C
+[?2004h(base) ]0;hdolivia@lx1-fuxi109: ~/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend[01;32mhdolivia@lx1-fuxi109[00m:[01;34m~/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend[00m$ npm run dev
+[?2004l
+> todo-express-backend@0.0.0 dev
+> nodemon ./bin/www
+
+[33m[nodemon] 2.0.12[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,json[39m
+[32m[nodemon] starting `node ./bin/www`[39m
+number of initial todos [33m7[39m
+^C
+[?2004h(base) ]0;hdolivia@lx1-fuxi109: ~/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/todo-backend[01;32mhdolivia@lx1-fuxi109[00m:[01;34m~/Documents/HY tkt/Full-Stack-Open-2022/Osa 12/part12-containers-applications/todo-app/to

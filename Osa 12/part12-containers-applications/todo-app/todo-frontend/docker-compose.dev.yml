@@ -1,0 +1,10 @@
+services:
+  app:
+    image: todo-frontend-dev
+    build:
+      context: . # The context will pick this directory as the "build context"
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./:/usr/src/app
+    ports:
+    - 3001:3001 # why this no longer needs to be 8080:80 even though we are still using nginx?

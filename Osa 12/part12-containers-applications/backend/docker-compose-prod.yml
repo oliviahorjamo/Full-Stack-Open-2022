@@ -1,0 +1,9 @@
+# a docker-compose for running the backend in prod mode
+
+# services:
+# db
+# app
+# otherwise the same but the command ran is npm start and not npm start dev
+# this specified in Dockerfile
+
+# this is the docker-compose file that should be run by fly

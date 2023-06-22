@@ -4,17 +4,17 @@ services:
     volumes:
       - ./todo-frontend/:/usr/src/app
     environment:
-      - REACT_APP_BACKEND_URL=http://localhost:3000 # muuta tä myöhemmin viittamaan serviceen
-    ports:
-      - 3001:3001
+      - REACT_APP_BACKEND_URL=http://localhost:8080/api
+    #ports:
+     # - 3001:3001
   backend:
     image: todo-backend-dev
     volumes:
       - ./todo-backend/:/usr/src/app
-    ports:
-      - 3000:3000
+    #ports:
+     # - 3000:3000
     environment:
-      - MONGO_URL=http://mogno:27017
+      - MONGO_URL=http://mongo:27017
       - REDIS_URL=http://redis:6379
     depends_on:
       - mongo

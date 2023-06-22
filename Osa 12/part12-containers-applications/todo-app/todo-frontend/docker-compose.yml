@@ -1,11 +1,28 @@
+version: '3.8'
+
 services:
-  app:
-    image: todo-frontend-dev
+  frontend:
+    image: todo-frontend
     build:
       context: . # The context will pick this directory as the "build context"
-      dockerfile: dev.Dockerfile
+      dockerfile: Dockerfile
     volumes:
-      - ./:/usr/src/app
+    - ./:/usr/src/app
     ports:
-    - 3001:3000 # why this no longer needs to be 8080:80 even though we are still using nginx?
-    container_name: todo-frontend-dev
+    - 3000:80
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - frontend
+  
+# starting on prod mode done by building the image and then running the image by docker run -p 8080:80 image_name
+# or just run this file
+
+# this starts frontend in localhost:8080
+# what i'm wondering is how it works with the reverse proxy that is also
+# started in 8080
